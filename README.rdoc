@@ -1,0 +1,23 @@
+= dir_validate gem
+
+==Overview 
+
+This gem ...
+
+==Releases
+
+- 0.0.1 initial release
+
+==Usage
+
+Blah.
+
+==Running tests
+
+	bundle exec rspec spec
+
+==Generate documentation
+
+To generate documentation into the doc folder:
+
+	yard
