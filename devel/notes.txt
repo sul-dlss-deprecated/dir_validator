@@ -1,15 +1,15 @@
-dv = DirValidator.new
-
-dv.subdir '00'
-dv.subdir '01'
-dv.file 'checksums.txt'
-dv.file 'manifest.txt'
-
 revs & ReidDennis
 
     +   *.tif
     1   checksums.txt
     1   manifest.csv
+
+    file:
+      name: checksums.txt
+    file:
+      name: manifest.csv
+    files:
+      glob: *.tif
 
 rumsey
 
@@ -17,11 +17,25 @@ rumsey
     +     *.tif
     1     descMetadata.xml
 
+    dirs:
+      re: DRUID
+      files:
+        glob: *.tif
+      file:
+        name: descMetadata.xml
+
 gould
 
     +   BARCODE/
     1     00/
     +       *.jpg
+
+    dirs:
+      re: BARCODE
+      dir:
+        name: 00
+        files:
+          glob: *.jpg
 
 AP & Hummel
 
@@ -36,6 +50,13 @@ AP & Hummel
     +       *.jpg
     1     05/
     +       *.jpg
+
+    dirs:
+      re: DRUID
+      dirs:
+        re: 0[1235]
+        files:
+          glob: *.tif
 
 SOHP
 
