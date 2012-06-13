@@ -1,106 +1,148 @@
-revs & ReidDennis
+Examples:
 
-    +   *.tif
-    1   checksums.txt
-    1   manifest.csv
+    revs & ReidDennis
 
-    file:
-      name: checksums.txt
-    file:
-      name: manifest.csv
-    files:
-      glob: *.tif
+        +   *.tif
+        1   checksums.txt
+        1   manifest.csv
 
-rumsey
-
-    +   DRUID/
-    +     *.tif
-    1     descMetadata.xml
-
-    dirs:
-      re: DRUID
-      files:
-        glob: *.tif
-      file:
-        name: descMetadata.xml
-
-gould
-
-    +   BARCODE/
-    1     00/
-    +       *.jpg
-
-    dirs:
-      re: BARCODE
-      dir:
-        name: 00
+        file:
+          name: checksums.txt
+        file:
+          name: manifest.csv
         files:
-          glob: *.jpg
+          pattern: *.tif
 
-AP & Hummel
+    rumsey
 
-    +   DRUID/
-    1     00/
-    +       *.tif
-    1     01/
-    +       *.jpg
-    1     02/
-    +       *.jp2
-    1     03/
-    +       *.jpg
-    1     05/
-    +       *.jpg
+        +   DRUID/
+        +     *.tif
+        1     descMetadata.xml
 
-    dirs:
-      re: DRUID
-      dirs:
-        re: 0[1235]
+        dirs:
+          re: DRUID
+          files:
+            pattern: *.tif
+          file:
+            name: descMetadata.xml
+
+    gould
+
+        +   BARCODE/
+        1     00/
+        +       *.jpg
+
+        dirs:
+          re: BARCODE
+          dir:
+            name: 00
+            files:
+              pattern: *.jpg
+
+    AP & Hummel
+
+        +   DRUID/
+        1     00/
+        +       *.tif
+        1     01/
+        +       *.jpg
+        1     02/
+        +       *.jp2
+        1     03/
+        +       *.jpg
+        1     05/
+        +       *.jpg
+
+        dirs:
+          re: DRUID
+          dirs:
+            re: 0[1235]
+            files:
+              pattern: *.tif
+
+    SOHP
+
+        Images
+            bc006dj2846_111_img_1.jpg
+            bc006dj2846_111_img_1.jpg.md5
+            bc006dj2846_111_img_2.jpg
+            bc006dj2846_111_img_2.jpg.md5
+        PM
+            bc006dj2846_111_a_pm.wav
+            bc006dj2846_111_a_pm.wav.md5
+            bc006dj2846_111_b_pm.wav
+            bc006dj2846_111_b_pm.wav.md5
+        SH
+            bc006dj2846_111_a_sh.wav
+            bc006dj2846_111_a_sh.wav.md5
+            bc006dj2846_111_b_sh.wav
+            bc006dj2846_111_b_sh.wav.md5
+        SL
+            bc006dj2846_111_a_sl.mp3
+            bc006dj2846_111_a_sl.mp3.md5
+            bc006dj2846_111_a_sl_techmd.xml
+            bc006dj2846_111_b_sl.mp3
+            bc006dj2846_111_b_sl.mp3.md5
+            bc006dj2846_111_b_sl_techmd.xml
+        preContentMetadata.xml
+
+
+        file:
+          name: preContentMetadata.xml
+        dirs:
+          re: /^(\w{11})$/
+          eval: druid = dv.name
+          dir:
+            name: Images
+            files:
+              re: ^(#{druid}_\d+_)img(\d+).jpg$
+              file:
+                name: #{parent.basename + '.md5'}
+              eval: druid_n = fs.first.match_data[1]
+          dir:
+            name: 'SH'
+          dir:
+            name: 'SL'
+          dir:
+            name: 'PM'
+            files:
+              re: ^(#{druid_n}_\w+)_pm.wav$
+              eval: prefix = f.match_data[1]
+              file:
+                name: #{prefix + '.md5'}
+              file:
+                name: #{File.join '..', 'SL', prefix, '_sl.wav'}
+                name: #{File.join '..', 'SL', prefix, '_sl.wav.md5'}
+                name: #{File.join '..', 'SL', prefix, '_sl.techmd.xml'}
+                name: #{File.join '..', 'SH', prefix, '_sl.wav'}
+                name: #{File.join '..', 'SH', prefix, '_sl.wav.md5'}
+
+
+    Paired files
+
+        *.xlsx
+        *.docx   # Paired with Excel files.
+
+
         files:
-          glob: *.tif
+          pattern: *.xlsx
+          file:
+            pattern: #{parent.basename}.docx
 
-SOHP
 
+Errors:
 
-    Images
-    Images/bc006dj2846_111_img_1.jpg
-    Images/bc006dj2846_111_img_1.jpg.md5
-    Images/bc006dj2846_111_img_2.jpg
-    Images/bc006dj2846_111_img_2.jpg.md5
-    PM
-    PM/bc006dj2846_111_a_pm.wav
-    PM/bc006dj2846_111_a_pm.wav.md5
-    PM/bc006dj2846_111_b_pm.wav
-    PM/bc006dj2846_111_b_pm.wav.md5
-    SH
-    SH/bc006dj2846_111_a_sh.wav
-    SH/bc006dj2846_111_a_sh.wav.md5
-    SH/bc006dj2846_111_b_sh.wav
-    SH/bc006dj2846_111_b_sh.wav.md5
-    SL
-    SL/bc006dj2846_111_a_sl.mp3
-    SL/bc006dj2846_111_a_sl.mp3.md5
-    SL/bc006dj2846_111_a_sl_techmd.xml
-    SL/bc006dj2846_111_b_sl.mp3
-    SL/bc006dj2846_111_b_sl.mp3.md5
-    SL/bc006dj2846_111_b_sl_techmd.xml
-    preContentMetadata.xml
+    Assertion failed:
+      Item existence:
+        dir        # n = 1
+        file
+        dirs       # default n = 1+
+          n        # Examples: 0+, 1+, 2, 5-10
+        files
+          n
+      Item name:
+        name
+        re
+        pattern
 
-    +   DRUID/
-    1     Images
-    +       >
-              X = DRUID_111_img_?
-              X.jpg
-              X.md5
-    1     PM/
-    +       >
-              X = DRUID_111_?
-              X_pm.wav
-              X_pm.wav.md5
-              ../SH/X_sh.wav
-              ../SH/X_sh.wav.md5
-              ../SL/X_sl.wav
-              ../SL/X_sl.wav.md5
-              ../SL/X_sl.techmd.xml
-    1     SH/
-    1     SL/
-    1     preContentMetadata.xml
+    Extra item found.

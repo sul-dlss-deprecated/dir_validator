@@ -1,9 +1,10 @@
 #! /usr/bin/env ruby
 
+# SOHP demo.
 def main
   dv = DirValidator.new('some/path')
   dv.file(:name => 'preContentMetadata.xml')
-  dv.dirs(:n => '+').each(&druid_dir_validator)
+  dv.dirs.each(&druid_dir_validator)
 end
 
 def druid_dir_validator(dv)
@@ -16,11 +17,11 @@ def druid_dir_validator(dv)
   sl  = dv.dir(:name => 'SL')
   sh  = dv.dir(:name => 'SH')
 
-  files = img.files(:n => 2, :re => /^(#{druid}_\d+_)img(\d+).jpg$/)
-  files.each do |f|
+  fs = img.files(:re => /^(#{druid}_\d+_)img(\d+).jpg$/)
+  fs.each do |f|
     img.file(:name => f.basename + '.md5')
   end
-  druid_n = files.first.match_data[1]
+  druid_n = fs.first.match_data[1]
 
   pm.files(:re =~ /^(#{druid_n}_\w+)_pm.wav$/).each do |f|
     prefix = f.match_data[1]
