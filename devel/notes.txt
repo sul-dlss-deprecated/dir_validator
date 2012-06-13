@@ -1,0 +1,85 @@
+dv = DirValidator.new
+
+dv.subdir '00'
+dv.subdir '01'
+dv.file 'checksums.txt'
+dv.file 'manifest.txt'
+
+revs & ReidDennis
+
+    +   *.tif
+    1   checksums.txt
+    1   manifest.csv
+
+rumsey
+
+    +   DRUID/
+    +     *.tif
+    1     descMetadata.xml
+
+gould
+
+    +   BARCODE/
+    1     00/
+    +       *.jpg
+
+AP & Hummel
+
+    +   DRUID/
+    1     00/
+    +       *.tif
+    1     01/
+    +       *.jpg
+    1     02/
+    +       *.jp2
+    1     03/
+    +       *.jpg
+    1     05/
+    +       *.jpg
+
+SOHP
+
+
+    Images
+    Images/bc006dj2846_111_img_1.jpg
+    Images/bc006dj2846_111_img_1.jpg.md5
+    Images/bc006dj2846_111_img_2.jpg
+    Images/bc006dj2846_111_img_2.jpg.md5
+    PM
+    PM/bc006dj2846_111_a_pm.wav
+    PM/bc006dj2846_111_a_pm.wav.md5
+    PM/bc006dj2846_111_b_pm.wav
+    PM/bc006dj2846_111_b_pm.wav.md5
+    SH
+    SH/bc006dj2846_111_a_sh.wav
+    SH/bc006dj2846_111_a_sh.wav.md5
+    SH/bc006dj2846_111_b_sh.wav
+    SH/bc006dj2846_111_b_sh.wav.md5
+    SL
+    SL/bc006dj2846_111_a_sl.mp3
+    SL/bc006dj2846_111_a_sl.mp3.md5
+    SL/bc006dj2846_111_a_sl_techmd.xml
+    SL/bc006dj2846_111_b_sl.mp3
+    SL/bc006dj2846_111_b_sl.mp3.md5
+    SL/bc006dj2846_111_b_sl_techmd.xml
+    preContentMetadata.xml
+
+    +   DRUID/
+    1     Images
+    +       >
+              X = DRUID_111_img_?
+              X.jpg
+              X.md5
+    1     PM/
+    +       >
+              X = DRUID_111_?
+              X_pm.wav
+              X_pm.wav.md5
+              ../SH/X_sh.wav
+              ../SH/X_sh.wav.md5
+              ../SL/X_sl.wav
+              ../SL/X_sl.wav.md5
+              ../SL/X_sl.techmd.xml
+    1     SH/
+    1     SL/
+    1     preContentMetadata.xml
