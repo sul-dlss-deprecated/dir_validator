@@ -3,11 +3,11 @@
 # SOHP demo.
 def main
   dv = DirValidator.new('some/path')
-  dv.file(:name => 'preContentMetadata.xml')
   dv.dirs.each(&druid_dir_validator)
 end
 
 def druid_dir_validator(dv)
+  dv.file(:name => 'preContentMetadata.xml')
   druid_re = /^(\w{11})$/
   dv.name =~ druid_re
   druid = dv.name

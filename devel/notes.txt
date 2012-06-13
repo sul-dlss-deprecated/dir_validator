@@ -21,10 +21,10 @@ Examples:
 
         dirs:
           re: DRUID
-          files:
-            pattern: *.tif
           file:
             name: descMetadata.xml
+          files:
+            pattern: *.tif
 
     gould
 
@@ -87,18 +87,18 @@ Examples:
         preContentMetadata.xml
 
 
-        file:
-          name: preContentMetadata.xml
         dirs:
           re: /^(\w{11})$/
-          eval: druid = dv.name
+          eval: druid = self.name
+          file:
+            name: preContentMetadata.xml
           dir:
             name: Images
             files:
               re: ^(#{druid}_\d+_)img(\d+).jpg$
               file:
                 name: #{parent.basename + '.md5'}
-              eval: druid_n = fs.first.match_data[1]
+              eval: druid_n = self.match_data[1]
           dir:
             name: 'SH'
           dir:
@@ -107,7 +107,7 @@ Examples:
             name: 'PM'
             files:
               re: ^(#{druid_n}_\w+)_pm.wav$
-              eval: prefix = f.match_data[1]
+              eval: prefix = self.match_data[1]
               file:
                 name: #{prefix + '.md5'}
               file:
@@ -146,3 +146,13 @@ Errors:
         pattern
 
     Extra item found.
+      # Allow users to opt out of this check.
+
+Other info:
+
+  Tallies:
+    N of files
+    N of dirs
+    Total size.   # Not by default.
+
+  Tree output?  # Probably not.
