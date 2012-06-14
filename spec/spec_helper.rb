@@ -1,5 +1,13 @@
-project_root = File.expand_path(File.dirname(__FILE__) + '/..')
-lib_dir      = File.join(project_root, 'lib')
+project_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
+require        File.expand_path(File.join(project_root, 'config', 'boot'))
 
-$LOAD_PATH.unshift(lib_dir)
-require 'dir_validator'
+def fixture_item(dir, file = nil)
+  item   = dir.to_s
+  item   = File.join(item, file.to_s) if file
+  fixdir = File.join('spec', 'fixtures')
+  return item.start_with?(fixdir) ? item : File.join(fixdir, item)
+end
+
+def dir_contents(dir)
+  return Dir.chdir(dir) { Dir.glob('*') }
+end
