@@ -1,10 +1,9 @@
 describe DirValidator::Validator do
 
   before(:each) do
-    @dv = DirValidator::Validator.new('')
+    @fdir = fixture_item(:simple)
+    @dv   = DirValidator::Validator.new(@fdir)
   end
-
-  ####################
 
   describe "initialization and other setup" do
 
@@ -13,8 +12,6 @@ describe DirValidator::Validator do
     end
 
   end
-
-  ####################
 
   describe "file()" do
 
@@ -26,6 +23,29 @@ describe DirValidator::Validator do
         @dv.validators.size == i + 1
         @dv.validators.last.exp_name.should == nm
       end
+    end
+
+  end
+
+  describe "is_top_parent?()" do
+
+    it "returns true if the validator is the top parent" do
+      @dv.is_top_parent?.should == true
+    end
+
+    it "returns false for all other validators" do
+      %w(foo bar).each { |n| @dv.file(:name => n) }
+      @dv.validators.each do |v|
+        v.is_top_parent?.should == false
+      end
+    end
+
+  end
+
+  describe "catalog()" do
+
+    it "......" do
+      @dv.catalog.keys.sort.should == %w(. .. bar.xml foo.txt)
     end
 
   end

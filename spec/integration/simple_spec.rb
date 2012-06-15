@@ -9,7 +9,7 @@ describe "integration" do
   it "simple case: some missing files" do
     bad_files    = %w(xxx.doc yyy.xls)
     good_files   = dir_contents(@fdir)
-    exp_warnings = bad_files.map { |b| "Not found: #{fixture_item(@fdir, b)}" }
+    exp_warnings = bad_files.map { |b| "Not found: #{b}" }
 
     dv = DirValidator.new(@fdir)
     (bad_files + good_files).each { |f| dv.file(:name => f) }

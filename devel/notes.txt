@@ -156,3 +156,167 @@ Other info:
     Total size.   # Not by default.
 
   Tree output?  # Probably not.
+
+
+Path handling:
+  - User always supplies relative name, regex, and pattern values (relative
+    to the cwd of the parent Validator).
+  - When the catalog is built the root_parent.path is stripped from all paths.
+
+Validator
+  # Validator objects are created when user calls:
+  #   file()
+  #   files()
+  #   dir()
+  #   dirs()
+  #   validator()
+
+  # Existence assertions.
+  # By default a Validator does not assert the existence of any
+  # files or directory. Such validators merely serve as containers
+  # for other validators.
+  type           # :file, :dir. Default = :validator.
+  n              # 1, 2, 5-8, 0-1, 1+, 0+.
+                 # Defaults:
+                 #   validator()     0
+                 #   file(), dir()   1
+                 #   files(), dirs() 1+
+
+  # Name assertions.
+  # These parameters provide the user with several syntaxes for
+  # making assertions about file and directory names.
+  # They will be implemented as regexes.
+  name           # Users supplies literal name. Requires n = 1.
+  re             # User can supply String or Regexp.
+  pattern        # Similar to glob() syntax.
+  regex          # The name assertion converted to a Regexp.
+
+  # Attributes common to all Validators.
+  #   - The Validator hierarchy.
+  parent         # Parent Validator.
+  root_parent    # The top-level Validator.
+  validators     # Array of child Validators.
+
+  #   - Paths.
+  root_dir       # root_parent.cwd.
+  cwd            # Current working dir of the Validator. 
+                 # Equal to parent.path, with special handling for the root_parent.
+  path           # 
+
+  #   - Information held by the root_parent.
+  catalog        # Catalog
+  warnings
+
+Validator.new('tmp')    #1 root
+  file:                 #2
+    name: bar.xml
+  dirs:                 #3
+    re: DRUID
+    file:               #4a, 4b, 4c
+      re: foo.
+
+    DRUID1/
+      foo1a
+    DRUID2/
+    DRUID3/
+      foo3a
+      foo3b
+    xxx.txt
+    yyy.doc
+    bar.xml
+
+Validator #1
+
+  get-contents  # From dir-read
+    DRUID1/
+    DRUID2/
+    DRUID3/
+    xxx.txt
+    yyy.doc
+    bar.xml
+
+  check-validator-type :validator
+    recurse on child validators
+
+Validator #2
+
+  get-contents  # From parent's dir-read
+    DRUID1/
+    DRUID2/
+    DRUID3/
+    xxx.txt
+    yyy.doc
+    bar.xml
+
+  check-validator-type :file
+    matches = find-regex-matching-contents
+    matches = find-type-matching-contents of matches
+      bar.xml
+
+    check-quantity-assertion
+
+    for M in matches
+      M.mark-as-matched
+      recurse on child validators  # None in this case.
+
+Validator #3
+
+  get-contents  # Still from parent's dir-read
+    DRUID1/
+    DRUID2/
+    DRUID3/
+    xxx.txt
+    yyy.doc
+    bar.xml   # Matched.
+
+  check-validator-type :dir
+    matches = find-regex-matching-contents
+    matches = find-type-matching-contents of matches
+      DRUID1/
+      DRUID2/
+      DRUID2/
+
+    check-quantity-assertion
+
+    for M in matches
+      M.mark-as-matched
+      recurse on child validators
+
+Validator #4a
+
+  setup
+    cwd = parent.cwd/DRUID1
+
+  get-contents   # Fresh dir-read.
+    foo1a
+
+
+
+====================
+
+
+Validator.new('tmp')    #1 root
+  file:                 #2
+    name: bar.xml
+  dirs:                 #3
+    re: DRUID
+    file:               #4a, 4b, 4c
+      re: foo.
+
+
+bar.xml           #a
+DRUID/            #b
+DRUID/foo.        #c
+
+DRUID1/           #b
+DRUID1/foo1a      #c
+DRUID2/           #b
+DRUID3/           #b
+DRUID3/foo3a      #c
+DRUID3/foo3b      #c
+bar.xml           #a
+xxx.txt
+yyy.doc
+
+
+=======================
