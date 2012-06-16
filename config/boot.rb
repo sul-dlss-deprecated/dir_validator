@@ -3,5 +3,6 @@ lib_dir      = File.join(project_root, 'lib')
 
 $LOAD_PATH.unshift(lib_dir)
 
+require 'rubygems'
 require 'dir_validator'
 require 'awesome_print'

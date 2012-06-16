@@ -1,5 +1,4 @@
-project_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
-require        File.expand_path(File.join(project_root, 'config', 'boot'))
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'boot'))
 
 def fixture_item(dir, file = nil)
   item   = dir.to_s

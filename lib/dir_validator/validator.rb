@@ -1,5 +1,70 @@
 class DirValidator::Validator
-  
+
+  attr_accessor(
+    :root_path,
+    :catalog,
+    :warnings)
+
+  def initialize(root_path)
+    @root_path = root_path
+    @catalog   = DirValidator::Catalog.new(self)
+    @warnings  = []
+  end
+
+  def dirs(vid, opts = {})
+    quant = DirValidator::Quantity.new(opts[:n] || '1+')
+
+    items = @catalog.unmatched_dirs
+    items = name_filtered(items, opts)
+    items = quantity_limited(items, quant)
+
+    sz = items.size
+    add_warning(vid, "Expected #{quant.spec.inspect}, got #{sz}.") unless sz >= quant.min_n
+
+    items.each { |i| i.matched = true }
+
+    return items
+  end
+
+  def dir(vid, opts = {})
+    return dirs(vid, opts.merge({:n => '1'}))
+  end
+
+  def name_filtered(items, opts)
+    rgx = name_regex(opts)
+    return items.select { |i| i.path =~ rgx  }
+  end
+
+  def name_regex(opts)
+    name    = opts[:name]
+    re      = opts[:re]
+    pattern = opts[:pattern]
+    nmrgx   = name    ? Regexp.quote(name)     :
+              pattern ? pattern_to_re(pattern) :
+              re      ? re                     : ''
+    return Regexp.new(nmrgx)
+  end
+
+  def pattern_to_re(pattern)
+    return pattern.gsub(/\*/, '.*').gsub(/\?/, '.')
+  end
+
+  def quantity_limited(items, quant)
+    return items[0 .. quant.max_index]
+  end
+
+  def add_warning(vid, msg)
+    @warnings << "#{vid}: #{msg}"
+  end
+
+  def report
+    @warnings.each { |w| puts w }
+  end
+
+end
+
+__END__
+
   attr_accessor(
     :root_path,
     :current_root,
@@ -54,5 +119,3 @@ class DirValidator::Validator
     @catalog = Hash[ content.sort.map { |item| [item, true] } ]
     return @catalog
   end
-
-end

@@ -6,5 +6,8 @@ module DirValidator
 
 end
 
-require 'dir_validator/version'
+require 'dir_validator/catalog'
+require 'dir_validator/item'
+require 'dir_validator/quantity'
 require 'dir_validator/validator'
+require 'dir_validator/version'

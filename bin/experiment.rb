@@ -1,12 +1,20 @@
 #! /usr/bin/env ruby
 
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'boot'))
+
+
 def main
 
-  dv = DirValidator.new('some/path')
+  dv = DirValidator.new('spec/fixtures/sohp')
   # create root_parent Validator
   # load the Catalog
 
-  ds = dv.dirs(:re => /^(\w{11})$/, :n  => '1+')
+  ds = dv.dirs('druid_dir', :re => /^(\w{11})$/, :n  => '1+')
+  # When calling dirs(), dir(), files(), and file(), the user supplies:
+  #   a validation identifier (will be used when reporting problems)
+  #   optional name-related specs
+  #   optional quantity-related specs
+  #
   # dirs() returns an enumerable object of Catalog Items, such that:
   #   Item.type is directory.
   #   Item.already_matched is false.
@@ -20,16 +28,20 @@ def main
   ds.each { |dir| druid_dir_validator(dv, dir) }
   # Caller is responsible for passing the DirValidator into their own methods.
 
+  dv.report()
+  # Caller requests report with various options.
+
 end
 
 def druid_dir_validator(dv, dir)
 
+  puts [dir.type, dir.matched, dir.path].inspect
+  return
+
   dv.file(:name => 'preContentMetadata.xml')
-  # file() returns a Catalog item, such that:
-  #   same as above.
-  #
-  # In addition:
-  #   same as above (in this case, N wanted = 1).
+  # file() returns
+  #   same as above, but there will never be more than 1 Item
+  #   caller must handle case of 0 Items.
 
   druid = dir.basename
   # Items provide various convenience methods to obtain file name components.
@@ -69,6 +81,8 @@ def druid_dir_validator(dv, dir)
   end
 
 end
+
+main()
 
 
 __END__
