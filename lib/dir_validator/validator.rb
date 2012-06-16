@@ -27,21 +27,51 @@ class DirValidator::Validator
   end
 
   def dir(vid, opts = {})
-    return dirs(vid, opts.merge({:n => '1'}))
+    return dirs( vid, opts.merge({:n => '1'}) )
+  end
+
+  def files(vid, opts = {})
+    quant = DirValidator::Quantity.new(opts[:n] || '1+')
+
+    items = @catalog.unmatched_files
+    items = name_filtered(items, opts)
+    items = quantity_limited(items, quant)
+
+    sz = items.size
+    add_warning(vid, "Expected #{quant.spec.inspect}, got #{sz}.") unless sz >= quant.min_n
+
+    items.each { |i| i.matched = true }
+
+    return items
+  end
+
+  def file(vid, opts = {})
+    return files( vid, opts.merge({:n => '1'}) )
   end
 
   def name_filtered(items, opts)
     rgx = name_regex(opts)
-    return items.select { |i| i.path =~ rgx  }
+    bd  = opts[:base_dir]
+    if bd
+      base_dir = bd + File::SEPARATOR unless bd.end_with?(File::SEPARATOR)
+      items    = items.select { |i| i.path.start_with?(base_dir) }
+    else
+      base_dir = ''
+    end
+    return items.select { |i| relative_path(i.path, base_dir) =~ rgx }
+  end
+
+  def relative_path(path, base_dir)
+    return path[base_dir.size .. -1]
   end
 
   def name_regex(opts)
     name    = opts[:name]
     re      = opts[:re]
     pattern = opts[:pattern]
-    nmrgx   = name    ? Regexp.quote(name)     :
-              pattern ? pattern_to_re(pattern) :
-              re      ? re                     : ''
+    nmrgx   = name    ? '\A' + Regexp.quote(name)     + '\z' :
+              pattern ? '\A' + pattern_to_re(pattern) + '\z' :
+              re      ? re                                   : ''
     return Regexp.new(nmrgx)
   end
 

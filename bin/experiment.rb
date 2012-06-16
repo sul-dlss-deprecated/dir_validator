@@ -25,7 +25,7 @@ def main
   #   A warning is logged if the N of matching Items < N wanted.
   #   The method never returns more than N wanted, and excess Items will remain unmatched.
 
-  ds.each { |dir| druid_dir_validator(dv, dir) }
+  ds.each { |dir| druid_dir_validator(dir) }
   # Caller is responsible for passing the DirValidator into their own methods.
 
   dv.report()
@@ -33,23 +33,29 @@ def main
 
 end
 
-def druid_dir_validator(dv, dir)
+def druid_dir_validator(dir)
 
-  puts [dir.type, dir.matched, dir.path].inspect
-  return
-
-  dv.file(:name => 'preContentMetadata.xml')
+  fs = dir.file('preCM', :name => 'preContentMetadata.xml')
   # file() returns
-  #   same as above, but there will never be more than 1 Item
-  #   caller must handle case of 0 Items.
+  #   - Same as above, but there will never be more than 1 Item.
+  #   - Caller must handle 0 Items, if it matters to subsequent code.
+  #
+  # Note that we are calling file() on a Catalog Item.
+  #   - Translates into a file() call on main DirValidator.
+  #   - But regex is framed relative to cwd of Item, not DirValidator.
+
+  f = fs.first
+  ap dir.path
+  ap f.path
+  return
 
   druid = dir.basename
   # Items provide various convenience methods to obtain file name components.
 
-  img = dv.dir(:name => 'Images')
-  pm  = dv.dir(:name => 'PM')
-  sl  = dv.dir(:name => 'SL')
-  sh  = dv.dir(:name => 'SH')
+  img = dir.dir(:name => 'Images')
+  pm  = dir.dir(:name => 'PM')
+  sl  = dir.dir(:name => 'SL')
+  sh  = dir.dir(:name => 'SH')
   # dir() returns a Catalog item ... (same as above)
 
   fs = img.files(:re => /^(#{druid}_\d+_)img(\d+).jpg$/)
@@ -59,10 +65,6 @@ def druid_dir_validator(dv, dir)
   # Provide a mechanism allowing caller to retrieve MatchData from a Catalog Item.
 
   fs.each { |f| img.file(:name => f.basename + '.md5') }
-  # Here we call file() on a Catalog Item.
-  #   - This translates into a file() call on the main DirValidator.
-  #   - But with same cwd adjustments: the regexes are framed relative to
-  #     the cwd of the Item rather than of the main DirValidator.
 
   fs = pm.files(:re =~ /^(#{druid_n}_\w+)_pm.wav$/)
   # Again calling files() on a Catalog Item.

@@ -21,4 +21,8 @@ class DirValidator::Item
     @type == :dir
   end
 
+  def file(vid, opts = {})
+    return @validator.files( vid, opts.merge({:n => '1', :base_dir => @path}) )
+  end
+
 end
