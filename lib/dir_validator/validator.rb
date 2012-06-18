@@ -55,7 +55,7 @@ class DirValidator::Validator
     else
       base_dir = ''
     end
-    return items.select { |i| i.matches(rgx, base_dir) }
+    return items.select { |i| i.match(rgx, base_dir) }
   end
 
   def name_regex(opts)

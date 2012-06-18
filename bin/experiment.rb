@@ -57,6 +57,9 @@ def druid_dir_validator(dir)
   fs = img.files('Images-jpg', :re => /^(#{druid}_\d+_)img_(\d+).jpg$/)
   # dir() returns a Catalog item ... (same as above)
 
+  druid_n = fs.first.match_data[1]
+  # Provide a mechanism allowing caller to retrieve MatchData from a Catalog Item.
+
   info = [
     "druid         => #{druid}",
     "dir.path      => #{dir.path}",
@@ -67,13 +70,10 @@ def druid_dir_validator(dir)
     "sh.path       => #{sh.path}  #{sl.type}",
     "fs.size       => #{fs.size}",
     "fs.first.path => #{fs.first.path}",
+    "druid_n       => #{druid_n}",
   ]
   ap info
   return
-  # TODO: next = Item.matches()
-
-  druid_n = fs.first.match_data[1]
-  # Provide a mechanism allowing caller to retrieve MatchData from a Catalog Item.
 
   fs.each { |f| img.file(:name => f.basename + '.md5') }
 
