@@ -35,6 +35,12 @@ class DirValidator::Item
     @pathname.basename.to_s
   end
 
+  def matches(regex, base_dir = nil)
+    p = base_dir ? @pathname.relative_path_from(Pathname.new(base_dir)) : @pathname
+    return p.to_s =~ regex
+    # TODO: need to store match_data.
+  end
+
   def files(vid, opts = {})
     opts = opts.merge({:base_dir => path})
     return @validator.files(vid, opts)

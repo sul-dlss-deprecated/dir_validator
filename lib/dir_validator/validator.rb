@@ -55,11 +55,7 @@ class DirValidator::Validator
     else
       base_dir = ''
     end
-    return items.select { |i| relative_path(i.path, base_dir) =~ rgx }
-  end
-
-  def relative_path(path, base_dir)
-    return path[base_dir.size .. -1]
+    return items.select { |i| i.matches(rgx, base_dir) }
   end
 
   def name_regex(opts)
