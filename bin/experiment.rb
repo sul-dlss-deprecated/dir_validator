@@ -35,7 +35,7 @@ end
 
 def druid_dir_validator(dir)
 
-  f = dir.file('preCM', :name => 'preContentMetadata.xml').first
+  dir.file('preCM', :name => 'preContentMetadata.xml')
   # file() returns
   #   - Same as above: returns an enumerable object.
   #   - But there will never be more than 1 Item in the list.
@@ -54,98 +54,24 @@ def druid_dir_validator(dir)
   sh  = dir.dir('SH',     :name => 'SH').first
   # dir() returns a Catalog item ... (same as above)
 
-  fs = img.files('Images-jpg', :re => /^(#{druid}_\d+_)img_(\d+).jpg$/)
-  # dir() returns a Catalog item ... (same as above)
+  druid_n = nil
+  img.files('Images-jpg', :re => /^(#{druid}_\d+)_img_(\d+).jpg$/).each do |f|
+    druid_n = f.match_data[1]
+    # Whenever a regex check is run against an Item, the MatchData stored.
 
-  druid_n = fs.first.match_data[1]
-  # Provide a mechanism allowing caller to retrieve MatchData from a Catalog Item.
+    img.file('Images-md5', :name => f.basename + '.md5')
+  end
 
-  info = [
-    "druid         => #{druid}",
-    "dir.path      => #{dir.path}",
-    "f.path        => #{f.path}   #{f.type}",
-    "img.path      => #{img.path} #{img.type}",
-    "pm.path       => #{pm.path}  #{pm.type}",
-    "sl.path       => #{sl.path}  #{sl.type}",
-    "sh.path       => #{sh.path}  #{sl.type}",
-    "fs.size       => #{fs.size}",
-    "fs.first.path => #{fs.first.path}",
-    "druid_n       => #{druid_n}",
-  ]
-  ap info
-  return
-
-  fs.each { |f| img.file(:name => f.basename + '.md5') }
-
-  fs = pm.files(:re =~ /^(#{druid_n}_\w+)_pm.wav$/)
-  # Again calling files() on a Catalog Item.
-  
-  fs.each do |f|
+  pm.files('PM-wav', :re => /^(#{druid_n}_\w+)_pm.wav$/).each do |f|
     prefix = f.match_data[1]
-
-    pm.file(:name => prefix + '.md5')
-    sl.file(:name => prefix + '_sl.wav')
-    sl.file(:name => prefix + '_sl.wav.md5')
-    sl.file(:name => prefix + '_sl.techmd.xml')
-    sh.file(:name => prefix + '_sh.wav')
-    sh.file(:name => prefix + '_sh.wav.md5')
-    # Again calling file() on a Catalog Item.
-
+    pm.file('PM-md5',     :name => f.basename + '.md5')
+    sl.file('SL-mp3',     :name => prefix + '_sl.mp3')
+    sl.file('SL-mp3-md5', :name => prefix + '_sl.mp3.md5')
+    sl.file('SL-techmd',  :name => prefix + '_sl_techmd.xml')
+    sh.file('SH-wav',     :name => prefix + '_sh.wav')
+    sh.file('SH-md5',     :name => prefix + '_sh.wav.md5')
   end
 
 end
 
 main()
-
-
-__END__
-
-def foo(a, b, &c)
-  puts [a,b].inspect
-  c.call
-end
-
-def bar(a, b)
-  puts [a,b].inspect
-  yield
-end
-
-x = lambda { puts "BLOCK" }
-foo(11, 22, &x)
-bar(11, 22, &x)
-
-foo(11, 22) {
-  puts "block"
-}
-
-bar(11, 22) {
-  puts "block"
-}
-
-
-__END__
-
-class DirValidator
-
-
-  def initialize
-    @catalog = [11,22,33,44,55]
-  end
-
-  def dirs
-    return @catalog.select { |c| c.odd? }
-  end
-
-end
-
-
-def druid_dir_validator(*args)
-  puts args.inspect
-end
-
-def main
-  dv = DirValidator.new
-  dv.dirs.each { |c| druid_dir_validator(dv, c) }
-end
-
-main
