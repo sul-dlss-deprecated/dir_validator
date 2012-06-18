@@ -84,8 +84,12 @@ class DirValidator::Validator
     @warnings << "#{vid}: #{msg}"
   end
 
-  def report
+  def validate
     warn_about_unmatched()
+  end
+
+  def report
+    validate()
     @warnings.each { |w| puts w }
   end
 
