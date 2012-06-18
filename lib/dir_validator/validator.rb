@@ -11,10 +11,9 @@ class DirValidator::Validator
     @warnings  = []
   end
 
-  def dirs(vid, opts = {})
+  def process_items(items, vid, opts = {})
     quant = DirValidator::Quantity.new(opts[:n] || '1+')
 
-    items = @catalog.unmatched_dirs
     items = name_filtered(items, opts)
     items = quantity_limited(items, quant)
 
@@ -24,25 +23,18 @@ class DirValidator::Validator
     items.each { |i| i.matched = true }
 
     return items
+  end
+
+  def dirs(vid, opts = {})
+    return process_items(@catalog.unmatched_dirs, vid, opts)
+  end
+
+  def files(vid, opts = {})
+    return process_items(@catalog.unmatched_files, vid, opts)
   end
 
   def dir(vid, opts = {})
     return dirs( vid, opts.merge({:n => '1'}) )
-  end
-
-  def files(vid, opts = {})
-    quant = DirValidator::Quantity.new(opts[:n] || '1+')
-
-    items = @catalog.unmatched_files
-    items = name_filtered(items, opts)
-    items = quantity_limited(items, quant)
-
-    sz = items.size
-    add_warning(vid, "Expected #{quant.spec.inspect}, got #{sz}.") unless sz >= quant.min_n
-
-    items.each { |i| i.matched = true }
-
-    return items
   end
 
   def file(vid, opts = {})
@@ -69,14 +61,18 @@ class DirValidator::Validator
     name    = opts[:name]
     re      = opts[:re]
     pattern = opts[:pattern]
-    nmrgx   = name    ? '\A' + Regexp.quote(name)     + '\z' :
-              pattern ? '\A' + pattern_to_re(pattern) + '\z' :
-              re      ? re                                   : ''
+    nmrgx   = name    ? az_surround(Regexp.quote(name))     :
+              pattern ? az_surround(pattern_to_re(pattern)) :
+              re      ? re                                  : ''
     return Regexp.new(nmrgx)
   end
 
   def pattern_to_re(pattern)
     return pattern.gsub(/\*/, '.*').gsub(/\?/, '.')
+  end
+
+  def az_surround(s)
+    return "\\A#{s}\\z"
   end
 
   def quantity_limited(items, quant)
