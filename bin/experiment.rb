@@ -35,31 +35,41 @@ end
 
 def druid_dir_validator(dir)
 
-  fs = dir.file('preCM', :name => 'preContentMetadata.xml')
+  f = dir.file('preCM', :name => 'preContentMetadata.xml').first
   # file() returns
-  #   - Same as above, but there will never be more than 1 Item.
+  #   - Same as above: returns an enumerable object.
+  #   - But there will never be more than 1 Item in the list.
   #   - Caller must handle 0 Items, if it matters to subsequent code.
   #
   # Note that we are calling file() on a Catalog Item.
   #   - Translates into a file() call on main DirValidator.
   #   - But regex is framed relative to cwd of Item, not DirValidator.
 
-  f = fs.first
-  ap dir.path
-  ap f.path
-  return
-
   druid = dir.basename
   # Items provide various convenience methods to obtain file name components.
 
-  img = dir.dir(:name => 'Images')
-  pm  = dir.dir(:name => 'PM')
-  sl  = dir.dir(:name => 'SL')
-  sh  = dir.dir(:name => 'SH')
+  img = dir.dir('Images', :name => 'Images').first
+  pm  = dir.dir('PM',     :name => 'PM').first
+  sl  = dir.dir('SL',     :name => 'SL').first
+  sh  = dir.dir('SH',     :name => 'SH').first
   # dir() returns a Catalog item ... (same as above)
 
-  fs = img.files(:re => /^(#{druid}_\d+_)img(\d+).jpg$/)
+  fs = img.files('Images-jpg', :re => /^(#{druid}_\d+_)img_(\d+).jpg$/)
   # dir() returns a Catalog item ... (same as above)
+
+  info = [
+    "druid         => #{druid}",
+    "dir.path      => #{dir.path}",
+    "f.path        => #{f.path}   #{f.type}",
+    "img.path      => #{img.path} #{img.type}",
+    "pm.path       => #{pm.path}  #{pm.type}",
+    "sl.path       => #{sl.path}  #{sl.type}",
+    "sh.path       => #{sh.path}  #{sl.type}",
+    "fs.size       => #{fs.size}",
+    "fs.first.path => #{fs.first.path}",
+  ]
+  ap info
+  return
 
   druid_n = fs.first.match_data[1]
   # Provide a mechanism allowing caller to retrieve MatchData from a Catalog Item.

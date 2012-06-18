@@ -12,6 +12,11 @@ class DirValidator::Validator
   end
 
   def process_items(items, vid, opts = {})
+    if vid.class == Hash
+      msg = "Validation identifier should not be a hash: #{vid.inspect}"
+      raise ArgumentError, msg
+    end
+
     quant = DirValidator::Quantity.new(opts[:n] || '1+')
 
     items = name_filtered(items, opts)
