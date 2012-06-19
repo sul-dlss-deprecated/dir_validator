@@ -1,5 +1,7 @@
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'boot'))
 
+require 'tempfile'
+
 def fixture_item(dir, file = nil)
   item   = dir.to_s
   item   = File.join(item, file.to_s) if file
