@@ -1,10 +1,6 @@
 class DirValidator::Quantity
 
-  attr_accessor(
-    :spec,
-    :min_n,
-    :max_n,
-    :max_index)
+  attr_reader(:spec, :min_n, :max_n, :max_index)
 
   def initialize(spec)
     @spec = spec
