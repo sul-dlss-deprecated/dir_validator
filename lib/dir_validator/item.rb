@@ -5,6 +5,7 @@ class DirValidator::Item
   attr_accessor(
     :pathname,
     :matched,
+    :target,
     :type,
     :match_data)
 
@@ -12,6 +13,7 @@ class DirValidator::Item
     @validator = validator
     @pathname  = Pathname.new(path).cleanpath
     @matched   = false
+    @target    = nil
     setup()
   end
 
@@ -25,20 +27,19 @@ class DirValidator::Item
   end
 
   def is_file
-    @type == :file
+    return @type == :file
   end
 
   def is_dir
-    @type == :dir
+    return @type == :dir
   end
 
   def basename
-    @pathname.basename.to_s
+    return @pathname.basename.to_s
   end
 
-  def match(regex, base_dir = nil)
-    p = base_dir ? @pathname.relative_path_from(Pathname.new(base_dir)) : @pathname
-    @match_data = regex.match(p.to_s)
+  def target_match(regex)
+    @match_data = regex.match(@target)
     return @match_data
   end
 

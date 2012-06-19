@@ -5,6 +5,8 @@ class DirValidator::Validator
     :catalog,
     :warnings)
 
+  FILE_SEP = File::SEPARATOR
+
   def initialize(root_path)
     @root_path = root_path
     @catalog   = DirValidator::Catalog.new(self)
@@ -47,32 +49,51 @@ class DirValidator::Validator
   end
 
   def name_filtered(items, opts)
+    # Filter the items to those in the base_dir.
+    # If there is no base_dir, no filtering occurs.
+    base_dir = normalized_base_dir(opts)
+    sz       = base_dir.size
+    items    = items.select { |i| i.path.start_with?(base_dir) } if sz > 0
+
+    # Set the item.target values.
+    # If there is no base_dir, the target is the same as item.path.
+    items.each { |i| i.target = i.path[sz .. -1] }
+
+    # Filter items to immediate children, unless user wants to recurse.
+    items = items.reject { |i| i.target.include?(FILE_SEP) } unless opts[:recurse]
+
+    # Return the items having targets matching the name regex.
     rgx = name_regex(opts)
+    return items.select { |i| i.target_match(rgx) }
+  end
+
+  def normalized_base_dir(opts)
     bd  = opts[:base_dir]
-    if bd
-      base_dir = bd + File::SEPARATOR unless bd.end_with?(File::SEPARATOR)
-      items    = items.select { |i| i.path.start_with?(base_dir) }
-    else
-      base_dir = ''
-    end
-    return items.select { |i| i.match(rgx, base_dir) }
+    return '' unless bd
+    bd += FILE_SEP unless bd.end_with?(FILE_SEP)
+    return bd
   end
 
   def name_regex(opts)
     name    = opts[:name]
     re      = opts[:re]
     pattern = opts[:pattern]
-    nmrgx   = name    ? az_surround(Regexp.quote(name))     :
-              pattern ? az_surround(pattern_to_re(pattern)) :
-              re      ? re                                  : ''
-    return Regexp.new(nmrgx)
+    return Regexp.new(
+      name    ? name_to_re(name)       :
+      pattern ? pattern_to_re(pattern) :
+      re      ? re                     : ''
+    )
+  end
+
+  def name_to_re(name)
+    return az_wrap(Regexp.quote(name))
   end
 
   def pattern_to_re(pattern)
-    return pattern.gsub(/\*/, '.*').gsub(/\?/, '.')
+    return az_wrap(Regexp.quote(pattern).gsub(/\\\*/, '.*').gsub(/\\\?/, '.'))
   end
 
-  def az_surround(s)
+  def az_wrap(s)
     return "\\A#{s}\\z"
   end
 
