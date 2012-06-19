@@ -10,3 +10,7 @@ end
 def dir_contents(dir)
   return Dir.chdir(dir) { Dir.glob('*') }
 end
+
+def i2p(items)
+  return items.map { |i| i.path }.sort
+end
