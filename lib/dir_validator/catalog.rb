@@ -1,10 +1,10 @@
 class DirValidator::Catalog
 
-  DOTDIR    = '\.\.?'
-  DOTDIR_RE = / \A#{DOTDIR}\z | #{DOTDIR}\z /x
+  FS        = '\\' + File::SEPARATOR
+  DOTDIR    = '\.\.?\z'                      # A dotdir is . or .. at end-of-string,
+  DOTDIR_RE = / ( \A | #{FS} ) #{DOTDIR} /x  # preceded by start-of-string or file-sep.
 
-  attr_accessor(
-    :validator)
+  attr_accessor(:validator)
 
   def initialize(validator)
     @validator = validator
@@ -12,7 +12,7 @@ class DirValidator::Catalog
   end
 
   def items
-    @items ||= load_items()
+    return @items ||= load_items()
   end
 
   def load_items
@@ -27,7 +27,7 @@ class DirValidator::Catalog
   end
 
   def path_is_dot_dir(path)
-    return path =~ DOTDIR_RE
+    return path =~ DOTDIR_RE ? true : false
   end
 
   def unmatched_items
