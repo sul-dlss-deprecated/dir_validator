@@ -3,7 +3,7 @@ TODO: Integration tests for other project styles.
 TODO: Improve report() output.
 TODO: Code documentation and comments.
 TODO: README
-TODO: Release of gem.
+TODO: Release of gem: rake dlss_release
 
 
 Examples:
