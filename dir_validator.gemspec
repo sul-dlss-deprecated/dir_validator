@@ -1,17 +1,19 @@
 $LOAD_PATH.push File.expand_path("../lib", __FILE__)
 
-require 'dir_validator/version'
+VERSION = File.read(File.expand_path('../VERSION', __FILE__)).match('[\w\.]+')[0]
 
 Gem::Specification.new do |s|
 
   s.name              = 'dir_validator'
   s.rubyforge_project = 'dir_validator'
-  s.version           = DirValidator::VERSION
+  s.version           = VERSION
+
+  puts 
   s.authors           = ['Monty Hindman']
   s.email             = ['hindman@stanford.edu']
-  s.homepage          = ''
-  s.summary           = %q{...}
-  s.description       = %q{...}
+  s.homepage          = 'homepage...'
+  s.summary           = %q{Summary...}
+  s.description       = %q{Description...}
   s.require_paths     = ['lib']
   s.files             = `git ls-files`.split("\n")
   s.test_files        = `git ls-files -- {spec}/*`.split("\n")
