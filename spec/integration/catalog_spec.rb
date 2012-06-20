@@ -1,4 +1,4 @@
-describe DirValidator::Catalog do
+describe "Integration tests: DirValidator::Catalog" do
 
   it "load_items() returns correct N of items from a directory" do
     fdir = fixture_item(:basic)

@@ -1,18 +1,16 @@
-#! /usr/bin/env ruby
-
-describe "integration" do
+describe "Integration tests: preliminary..." do
 
   before(:each) do
     @fdir = fixture_item(:basic)
     @dv   = DirValidator.new(@fdir)
   end
 
-  it "..." do
+  it "1" do
     ds = @dv.dirs('top-level', :re => 'a')
     i2p(ds).should == %w(aa ab ba)
   end
 
-  it "..." do
+  it "2" do
     ds = @dv.dirs('top-level', :re => 'a', :recurse => true)
     i2p(ds).should == %w(
       aa aa/bar aa/foo 
@@ -21,7 +19,7 @@ describe "integration" do
       bb/bar)
   end
 
-  it "..." do
+  it "3" do
     ds = @dv.files('top-level', :pattern => 'aa/*.txt', :recurse => true)
     i2p(ds).should == [
       "aa/bar/01.txt",

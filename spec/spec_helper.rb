@@ -9,10 +9,6 @@ def fixture_item(dir, file = nil)
   return item.start_with?(fixdir) ? item : File.join(fixdir, item)
 end
 
-def dir_contents(dir)
-  return Dir.chdir(dir) { Dir.glob('*') }
-end
-
 def i2p(items)
   return items.map { |i| i.path }.sort
 end

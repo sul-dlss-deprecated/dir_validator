@@ -1,6 +1,4 @@
-#! /usr/bin/env ruby
-
-describe "Integration test: SOHP example" do
+describe "Integration tests: SOHP example" do
 
   it "should get the expected warnings" do
 
