@@ -8,26 +8,31 @@ class DirValidator::Quantity
   end
 
   def parse_spec
-    # Defaults.
-    @min_n     = 0
-    @max_n     = 1.0 / 0
-    @max_index = -1
-
-    # Parse spec.
     case @spec
     when '*'
-      # 0+. Use defaults.
+      # 0+.
+      @min_n     = 0
+      @max_n     = 1.0 / 0
+      @max_index = -1
+    when '+'
+      # 1+.
+      @min_n     = 1
+      @max_n     = 1.0 / 0
+      @max_index = -1
+    when '?'
+      # Zero or one (ie, optional).
+      @min_n     = 0
+      @max_n     = 1
+      @max_index = @max_n - 1
     when /\A (\d+)\+ \z/x
       # n+
-      @min_n = $1.to_i
+      @min_n     = $1.to_i
+      @max_n     = 1.0 / 0
+      @max_index = -1
     when /\A (\d+) \z/x
       # n
       @min_n     = $1.to_i
       @max_n     = @min_n
-      @max_index = @max_n - 1
-    when '?'
-      # Zero or one.
-      @max_n     = 1
       @max_index = @max_n - 1
     when /\A (\d+) - (\d+) \z/x
       # m-n
@@ -43,7 +48,7 @@ class DirValidator::Quantity
   end
 
   def invalid_spec
-    raise "Invalid quantitifer: #{@spec.inspect}."
+    raise ArgumentError, "Invalid quantitifer: #{@spec.inspect}."
   end
 
 end
