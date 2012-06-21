@@ -1,12 +1,12 @@
 $LOAD_PATH.push File.expand_path("../lib", __FILE__)
 
-VERSION = File.read(File.expand_path('../VERSION', __FILE__)).match('[\w\.]+')[0]
+vers = File.read(File.expand_path('../VERSION', __FILE__)).match('[\w\.]+')[0]
 
 Gem::Specification.new do |s|
 
   s.name              = 'dir_validator'
   s.rubyforge_project = 'dir_validator'
-  s.version           = VERSION
+  s.version           = vers
 
   puts 
   s.authors           = ['Monty Hindman']
@@ -24,5 +24,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'yard'
   s.add_development_dependency 'awesome_print'
   s.add_development_dependency 'looksee'
-  
+  s.add_development_dependency 'rcov'
 end
