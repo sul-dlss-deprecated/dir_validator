@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe DirValidator::Validator do
 
   before(:each) do
@@ -32,7 +34,8 @@ describe DirValidator::Validator do
 
     before(:each) do
       paths = %q(
-
+        foo/a.txt
+        foo
       )
       @items = paths.each { |p| DirValidator::Item.new(nil, p) }
     end

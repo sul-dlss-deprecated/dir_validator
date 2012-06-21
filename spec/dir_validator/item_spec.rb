@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe DirValidator::Item do
 
   def new_item(path)

@@ -1,6 +1,9 @@
+require 'rspec'
+require 'rspec/autorun'
+require 'tempfile'
+
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'boot'))
 
-require 'tempfile'
 
 def fixture_item(dir, file = nil)
   item   = dir.to_s

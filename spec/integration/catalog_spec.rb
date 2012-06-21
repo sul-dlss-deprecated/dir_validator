@@ -1,4 +1,6 @@
-describe "Integration tests: DirValidator::Catalog" do
+require 'spec_helper'
+
+describe("Integration tests: DirValidator::Catalog", :integration => true) do
 
   it "load_items() returns correct N of items from a directory" do
     fdir = fixture_item(:basic)

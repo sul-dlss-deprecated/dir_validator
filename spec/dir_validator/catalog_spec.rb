@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe DirValidator::Catalog do
 
   before(:each) do

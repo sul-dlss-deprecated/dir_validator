@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe DirValidator do
 
   it "can call new() on the module" do

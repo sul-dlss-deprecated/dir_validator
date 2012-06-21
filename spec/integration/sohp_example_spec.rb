@@ -1,4 +1,6 @@
-describe "Integration tests: SOHP example" do
+require 'spec_helper'
+
+describe("Integration tests: SOHP example", :integration => true) do
 
   it "should get the expected warnings" do
 

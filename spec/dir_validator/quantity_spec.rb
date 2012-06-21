@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe DirValidator::Quantity do
 
   def new_q(spec)

@@ -1,4 +1,6 @@
-describe "Integration tests: DirValidator::Validator" do
+require 'spec_helper'
+
+describe("Integration tests: DirValidator::Validator", :integration => true) do
 
   it "report()" do
     pending

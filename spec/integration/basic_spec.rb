@@ -1,4 +1,6 @@
-describe "Integration tests: preliminary..." do
+require 'spec_helper'
+
+describe("Integration tests: preliminary...", :integration => true) do
 
   before(:each) do
     @fdir = fixture_item(:basic)

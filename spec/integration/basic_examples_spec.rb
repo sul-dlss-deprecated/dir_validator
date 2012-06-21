@@ -1,4 +1,6 @@
-describe "Integration tests: basic project example" do
+require 'spec_helper'
+
+describe("Integration tests: basic project example", :integration => true) do
 
   it "project A..." do
     pending

@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe DirValidator::Warning do
 
   before(:each) do
