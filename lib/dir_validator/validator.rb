@@ -1,6 +1,6 @@
 class DirValidator::Validator
 
-  attr_reader(:root_path, :catalog, :warnings)
+  attr_reader(:root_path, :catalog, :warnings, :validated)
 
   FILE_SEP = File::SEPARATOR
 
@@ -8,6 +8,7 @@ class DirValidator::Validator
     @root_path = root_path
     @catalog   = DirValidator::Catalog.new(self)
     @warnings  = []
+    @validated = false
   end
 
   ####
@@ -79,7 +80,9 @@ class DirValidator::Validator
 
     # Add a warning if the N of Items is less than the user's expectation.
     sz = items.size
-    add_warning(vid, "Expected #{quant.spec.inspect}, got #{sz}.") unless sz >= quant.min_n
+    unless sz >= quant.min_n
+      add_warning(vid, "expected #{quant.spec.inspect}, got #{sz}")
+    end
 
     # Mark the Items as matched. This means that subsequent validations
     # will not return the same Items.
@@ -113,6 +116,8 @@ class DirValidator::Validator
   end
 
   def normalized_base_dir(opts)
+    # Given some validation options, returns opts[:base_dir] in a normalized
+    # form (with a trailing separator). Returns empty if the option is missing.
     bd = opts[:base_dir]
     return '' unless bd
     bd += FILE_SEP unless bd.end_with?(FILE_SEP)
@@ -120,6 +125,8 @@ class DirValidator::Validator
   end
 
   def name_regex(opts)
+    # Given some validation options, returns the appropriate Regexp
+    # based on the name-related criteria.
     name    = opts[:name]
     re      = opts[:re]
     pattern = opts[:pattern]
@@ -131,14 +138,21 @@ class DirValidator::Validator
   end
 
   def name_to_re(name)
+    # Converts a string into a regex-ready string, wrapped in start- and end-
+    # anchors and with all special characters quoted.
     return az_wrap(Regexp.quote(name))
   end
 
   def pattern_to_re(pattern)
+    # Converts a quasi-glob pattern to a regex-ready string. Specifically, all
+    # special regex chacters are quoted other than these:
+    #     * becomes .*
+    #     ? becomes .
     return az_wrap(Regexp.quote(pattern).gsub(/\\\*/, '.*').gsub(/\\\?/, '.'))
   end
 
   def az_wrap(s)
+    # Returns a string wrapped in Regexp start-of-string and end-of-string anchors.
     return "\\A#{s}\\z"
   end
 
@@ -156,23 +170,21 @@ class DirValidator::Validator
   # Methods related validation warnings and reporting.
   ####
 
-  def add_warning(vid, msg)
-    @warnings << "#{vid}: #{msg}"
+  def add_warning(vid, message)
+    @warnings << DirValidator::Warning.new(vid, message)
   end
 
-  def report
+  def report(io = STDOUT)
     validate()
-    @warnings.each { |w| puts w }
+    @warnings.each { |w| io.puts w }
   end
 
   def validate
-    warn_about_unmatched()
-  end
-
-  def warn_about_unmatched
+    return if @validated  # Run only once.
     @catalog.unmatched_items.each do |item|
-      add_warning('EXTRA', item.path)
+      add_warning('ExtraItem', item.path)
     end
+    @validated = true
   end
 
 end

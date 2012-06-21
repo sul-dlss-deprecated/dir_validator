@@ -1,10 +1,12 @@
 TODO: Tests for Validator.
 TODO: Integration tests for other project styles.
+TODO: Check coverage.
 TODO: Improve report() output.
 TODO: Code documentation and comments.
 TODO: README
-TODO: Release of gem: rake dlss_release
-
+TODO: LICENSE
+TODO: Release gem to github.
+TODO: Consider whether to support config-style syntax.
 
 Examples:
 

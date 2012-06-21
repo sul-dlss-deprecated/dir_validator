@@ -40,11 +40,11 @@ describe "Integration tests: SOHP example" do
 
     # Make sure we got the expected warnings.
     dv.validate
-    dv.warnings.should == [
-      'SL-techmd: Expected "1", got 0.',
-      'SL-techmd: Expected "1", got 0.',
-      'EXTRA: aa000aa0001/Transcript',
-      'EXTRA: aa000aa0001/Transcript/aa000aa0001.pdf',
+    dv.warnings.map(&:to_s).should == [
+      'SL-techmd: expected "1", got 0',
+      'SL-techmd: expected "1", got 0',
+      'ExtraItem: aa000aa0001/Transcript',
+      'ExtraItem: aa000aa0001/Transcript/aa000aa0001.pdf',
     ]
 
   end
