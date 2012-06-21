@@ -5,6 +5,28 @@ describe DirValidator::Validator do
   before(:each) do
     @fdir = fixture_item(:basic)
     @dv   = DirValidator::Validator.new(@fdir)
+    @mock_paths = %w(
+      a
+      b
+      bar/
+      bar/a
+      bar/b
+      bar/xx/
+      bar/xx/a
+      bar/xx/b
+      foo/
+      foo/a
+      foo/b
+      foo/xx/
+      foo/xx/c
+      foo/xx/d
+      foo/xyy/
+      foo/xyy/a
+      foo/xyy/b
+      fubb/
+      fubb/a
+      fubb/b
+    )
   end
 
   it "can initialize a validator" do
@@ -12,22 +34,60 @@ describe DirValidator::Validator do
     @dv.catalog.should be_kind_of DirValidator::Catalog
   end
 
+
+  ####
+  # Validation methods: dirs(), dir(), files(), file().
+  ####
+
+  describe "user-facing validation methods: dir() etc" do
+
+
+  end
+
   describe "process_items()" do
 
     before(:each) do
-      paths = %q()
-      @items = paths.each { |p| DirValidator::Item.new(nil, p) }
+      @items      = p2i(@mock_paths)
+      @vid        = 'test'
+      @root_paths = @mock_paths.reject { |i| i =~ /\// }
     end
 
-    it "validation methods should make appropriate calls to process_items()" do
+    it "should raise ArgumentError if user forgets to pass validation identifier" do
+      expect { @dv.process_items([], {}) }.to raise_error ArgumentError, /not be a hash/
     end
 
-    it "should work..." do
+    it "should return all items if there is no quantity limit" do
+      i2p(@dv.process_items(@items, @vid, {})).should == @root_paths
+    end
+
+    it "should return return no more than the max quantity" do
+      @dv.process_items(@items, @vid, {:n => '0-3'}).size.should == 3
+      @dv.process_items(@items, @vid, {:n => '2'}).size.should == 2
+      @dv.process_items(@items, @vid, {:n => '1-99'}).size.should == @root_paths.size
+    end
+
+    it "should add a warning if the N of items found is less than the min quantity" do
+      @dv.warnings.size.should == 0
+      # Will return enough: no warning.
+      n = @root_paths.size
+      @dv.process_items(@items, @vid, {:n => n.to_s})
+      @dv.warnings.size.should == 0
+      # Will return too few: warning.
+      n += 1
+      @dv.process_items(@items, @vid, {:n => n.to_s})
+      @dv.warnings.size.should == 1
+      # Check the warning.
+      w = @dv.warnings.first
+      w.message.should =~ /expected.+ got.+/
+    end
+
+    it "should set Item.matched = true for all returned Items" do
+      @items.any? { |i| i.matched }.should == false
+      @dv.process_items(@items, @vid, {}).all? { |i| i.matched }.should == true
     end
 
   end
 
-  
   ####
   # name_filtered()
   ####
@@ -35,29 +95,7 @@ describe DirValidator::Validator do
   describe "name_filtered()" do
 
     before(:each) do
-      @paths = %w(
-        a
-        b
-        bar/
-        bar/a
-        bar/b
-        bar/xx/
-        bar/xx/a
-        bar/xx/b
-        foo/
-        foo/a
-        foo/b
-        foo/xx/
-        foo/xx/c
-        foo/xx/d
-        foo/xyy/
-        foo/xyy/a
-        foo/xyy/b
-        fubb/
-        fubb/a
-        fubb/b
-      )
-      @items = p2i(@paths)
+      @items = p2i(@mock_paths)
     end
 
     describe "base_dir and recurse interaction" do
@@ -67,8 +105,8 @@ describe DirValidator::Validator do
         tests = [
           [ {}, %w(a b bar foo fubb) ],
           [ {:base_dir => 'foo'}, %w(foo/a foo/b foo/xx foo/xyy) ],
-          [ {:recurse => true}, @paths ],
-          [ {:recurse => true, :base_dir => 'foo'}, @paths.select { |p| p =~ /\Afoo./ } ],
+          [ {:recurse => true}, @mock_paths ],
+          [ {:recurse => true, :base_dir => 'foo'}, @mock_paths.select { |p| p =~ /\Afoo./ } ],
         ]
         tests.each do |opts, exp|
           nf = @dv.name_filtered(@items, common_opts.merge(opts))
@@ -132,10 +170,10 @@ describe DirValidator::Validator do
       it "should behave correctly with various patterns, w/wo base_dir" do
         common_opts = {:recurse => true}
         tests = [
-          [ {:pattern => 'f*'},     @paths.select { |p| p =~ /\Af/ } ],
+          [ {:pattern => 'f*'},     @mock_paths.select { |p| p =~ /\Af/ } ],
           [ {:pattern => 'f*/x??'}, %w(foo/xyy) ],
           [ {:pattern => 'f*/xy*'}, %w(foo/xyy foo/xyy/a foo/xyy/b) ],
-          [ {:pattern => 'x*',  :base_dir => 'foo'}, @paths.select { |p| p =~ /\Afoo\/x/ } ],
+          [ {:pattern => 'x*',  :base_dir => 'foo'}, @mock_paths.select { |p| p =~ /\Afoo\/x/ } ],
           [ {:pattern => '*/*', :base_dir => 'foo'}, %w(foo/xx/c foo/xx/d foo/xyy/a foo/xyy/b) ],
         ]
         tests.each do |opts, exp|
@@ -153,7 +191,7 @@ describe DirValidator::Validator do
         tests = [
           [ {}, %w(a bar) ],
           [ {:base_dir => 'foo'}, %w(foo/a) ],
-          [ {:recurse => true}, @paths.select { |p| p =~ /a/ } ],
+          [ {:recurse => true}, @mock_paths.select { |p| p =~ /a/ } ],
           [ {:recurse => true, :base_dir => 'foo'}, %w(foo/a foo/xyy/a) ],
         ]
         tests.each do |opts, exp|
