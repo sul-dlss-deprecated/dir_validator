@@ -3,8 +3,7 @@ require 'spec_helper'
 describe DirValidator::Validator do
 
   before(:each) do
-    @fdir = fixture_item(:basic)
-    @dv   = DirValidator::Validator.new(@fdir)
+    @dv = DirValidator::Validator.new('.')
     @mock_paths = %w(
       a
       b
@@ -39,8 +38,24 @@ describe DirValidator::Validator do
   # Validation methods: dirs(), dir(), files(), file().
   ####
 
-  describe "user-facing validation methods: dir() etc" do
+  describe "user-facing validation methods: dirs(), dir(), files(), file()" do
 
+    before(:each) do
+      @items = p2i(@mock_paths)
+      @vid   = 'test'
+    end
+
+    it "can exercise the methods" do
+      opts = {:recurse => true}
+      ds = @items.select { |i| i.is_dir  }
+      fs = @items.select { |i| i.is_file }
+      @dv.catalog.stub(:unmatched_dirs).and_return(ds)
+      @dv.catalog.stub(:unmatched_files).and_return(fs)
+      @dv.dirs(@vid,  opts).should == ds
+      @dv.files(@vid, opts).should == fs
+      @dv.dir(@vid,   opts).should == [ds.first]
+      @dv.file(@vid,  opts).should == [fs.first]
+    end
 
   end
 
@@ -293,6 +308,15 @@ describe DirValidator::Validator do
     @dv.add_warning('foo', 'blah')
     @dv.warnings.size.should == 2
     @dv.warnings.first.should be_kind_of DirValidator::Warning
+  end
+
+  it "can exercise report()" do
+    @dv.add_warning('foo', 'blah')
+    @dv.add_warning('foo', 'blah')
+    @dv.instance_variable_set('@validated', true)
+    sio = StringIO.new
+    @dv.report(sio)
+    sio.string.should == "foo: blah\nfoo: blah\n"
   end
 
   it "validate() should add warning for each unmatched Item, and should run once" do

@@ -1,6 +1,7 @@
 require 'rspec'
 require 'rspec/autorun'
 require 'tempfile'
+require 'stringio'
 
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'boot'))
 
