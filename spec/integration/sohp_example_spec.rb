@@ -27,7 +27,7 @@ describe("Integration tests: SOHP example", :integration => true) do
         img.file('Images-md5', :name => f.basename + '.md5')
       end
 
-      # Assert the existence of the content of the PM subdir, and 
+      # Assert the existence of the content of the PM subdir, and
       # of files in other subdirs having parallel names.
       pm.files('PM-wav', :re => /^(#{druid_n}_\w+)_pm.wav$/).each do |f|
         prefix = f.match_data[1]

@@ -15,7 +15,7 @@ describe DirValidator::Quantity do
   end
 
   describe "should parse valid specs correctly" do
-    
+
     it "0+" do
       ['*', '0+'].each do |spec|
         q = new_q(spec)

@@ -49,7 +49,7 @@ describe DirValidator::Item do
   end
 
   describe "can call validation methods on Item objects" do
-   
+
     before(:each) do
       # Setup params for the double and stubbed method.
       @dv   = double('dir_validator')
