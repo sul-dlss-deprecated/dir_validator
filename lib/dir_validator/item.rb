@@ -3,7 +3,7 @@ require 'pathname'
 class DirValidator::Item
 
   attr_accessor(:matched, :target)
-  attr_reader(:path, :basename, :match_data, :type, :is_file, :is_dir)
+  attr_reader(:path, :basename, :match_data, :filetype, :is_dir, :is_file)
 
   def initialize(validator, path)
     @validator  = validator
@@ -13,10 +13,10 @@ class DirValidator::Item
     @matched    = false
     @target     = nil
     @match_data = nil
-    @type       = @pathname.file?      ? :file : 
+    @filetype   = @pathname.file?      ? :file :
                   @pathname.directory? ? :dir  : nil
-    @is_file    = @type == :file
-    @is_dir     = @type == :dir
+    @is_dir     = @filetype == :dir
+    @is_file    = @filetype == :file
   end
 
   def target_match(regex)

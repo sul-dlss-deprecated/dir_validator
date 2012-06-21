@@ -17,15 +17,15 @@ describe DirValidator::Item do
     itm.basename.should == 'blah.txt'  # Can get basename.
   end
 
-  it "should set type-related attributes correctly" do
+  it "should set filetype-related attributes correctly" do
     # A dir.
     itm = new_item(Tempfile.new('item_spec_').path)
-    itm.type.should    == :file
+    itm.filetype.should    == :file
     itm.is_file.should == true
     itm.is_dir.should  == false
     # A dir.
     itm = new_item('.')
-    itm.type.should    == :dir
+    itm.filetype.should    == :dir
     itm.is_file.should == false
     itm.is_dir.should  == true
   end

@@ -16,7 +16,7 @@ def main
   #   optional quantity-related specs
   #
   # dirs() returns an enumerable object of Catalog Items, such that:
-  #   Item.type is directory.
+  #   Item.filetype is directory.
   #   Item.already_matched is false.
   #   regex tests pass.
   #
