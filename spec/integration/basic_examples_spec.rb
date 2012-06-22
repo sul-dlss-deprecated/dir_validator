@@ -1,17 +1,55 @@
 require 'spec_helper'
 
-describe("Integration tests: basic project example", :integration => true) do
+describe("Integration tests: basic project examples", :integration => true) do
 
-  it "project A..." do
-    pending
-    # dv = DirValidator.new(fixture_item(:sohp))
-    # dv.validate
-    # dv.warnings.map(&:to_s).should == [
-    #   'SL-techmd: expected "1", got 0',
-    #   'SL-techmd: expected "1", got 0',
-    #   'ExtraItem: aa000aa0001/Transcript',
-    #   'ExtraItem: aa000aa0001/Transcript/aa000aa0001.pdf',
-    # ]
+  before(:all) do
+    @druid_re = /[a-z]{2} \d{3} [a-z]{2} \d{4}/x
+  end
+
+  it "Revs" do
+    dv = DirValidator.new(fixture_item(:revs))
+    dv.dirs('druid_dirs', :re => @druid_re).each do |dir|
+      dir.files('tifs', :pattern => '*.tif')
+      dir.files('checksums', :name => 'checksums.txt')
+      dir.files('checksums', :name => 'manifest.csv')
+    end
+    dv.validate
+    dv.warnings.map(&:to_s).should == [
+      'checksums: expected "1+", got 0',
+      'ExtraItem: blah.txt',
+    ]
+  end
+
+  it "Paired files" do
+    dv = DirValidator.new(fixture_item(:paired_files))
+    dv.files('word_files', :pattern => '*.doc').each do |f|
+      nm = f.basename('.doc') + '.xls'
+      f.file('excel_files', :name => nm)
+    end
+    dv.validate
+    dv.warnings.map(&:to_s).should == [
+      'excel_files: expected "1", got 0',
+      'ExtraItem: foo.bar',
+    ]
+  end
+
+  it "Hummel" do
+    dv = DirValidator.new(fixture_item(:hummel))
+    dv.dirs('druid_dirs', :re => @druid_re).each do |dir|
+      d0 = dir.dir('00', :name => '00').first
+      d1 = dir.dir('01', :name => '01').first
+      d2 = dir.dir('02', :name => '02').first
+      d0.files('tifs', :pattern => '*.tif').each do |tif|
+        tif_base = tif.basename('.tif')
+        d1.file('jpg', :name => tif_base + '.jpg')
+        d2.file('jp2', :name => tif_base + '.jp2')
+      end
+    end
+    dv.validate
+    dv.warnings.map(&:to_s).should == [
+      'jp2: expected "1", got 0',
+      'ExtraItem: aa000aa0001/00/blort.txt',
+    ]
   end
 
 end

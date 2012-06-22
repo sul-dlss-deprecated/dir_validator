@@ -1,45 +1,11 @@
-TODO: Integration tests for other project styles.
-TODO: Check coverage.
+TODO: Warning reporting needs to provide the base_dir within which the error occurs.
+TODO: integration test for dirs() called on a dir Item
+TODO: integration test to exercise Quantity variants more fully
 TODO: Code documentation and comments.
 TODO: README
 TODO: LICENSE
 TODO: Release gem to github.
-TODO: Consider whether to support config-style syntax.
 TODO: Allow users to opt out of the extra-items check.
-TODO: Warning reporting needs to provide the base_dir within which the error occurs.
 TODO: Provide some tallies in output: dirs, files, missing, extra.
 TODO: Provide an option to include total file size among the tallies.
-
-Examples:
-
-    AP & Hummel
-
-        +   DRUID/
-        1     00/
-        +       *.tif
-        1     01/
-        +       *.jpg
-        1     02/
-        +       *.jp2
-        1     03/
-        +       *.jpg
-        1     05/
-        +       *.jpg
-
-        dirs:
-          re: DRUID
-          dirs:
-            re: 0[1235]
-            files:
-              pattern: *.tif
-
-    Paired files
-
-        *.xlsx
-        *.docx   # Paired with Excel files.
-
-
-        files:
-          pattern: *.xlsx
-          file:
-            pattern: #{parent.basename}.docx
+TODO: Consider whether to support config-style syntax.
