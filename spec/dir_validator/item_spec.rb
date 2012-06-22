@@ -30,6 +30,12 @@ describe DirValidator::Item do
     itm.is_dir.should  == true
   end
 
+  it "basename() should support a suffix argument" do
+    itm = new_item('foo/bar.rb')
+    itm.basename.should == 'bar.rb'
+    itm.basename('.rb').should == 'bar'
+  end
+
   it "target_match() should return MatchData and store it for later use" do
     itm = new_item('.')
     itm.target = 'aabb'
@@ -81,6 +87,28 @@ describe DirValidator::Item do
       hi = hash_including(:n => '1', :base_dir => @path)
       @dv.should_receive(:files).with(@vid, hi).and_return(@exp)
       DirValidator::Item.new(@dv, @path).file(@vid, @opts).should == @exp
+    end
+
+  end
+
+  describe "base_dir_opts()" do
+
+    it "should return expected hash for directories" do
+      itm = new_item('foo/bar')
+      itm.instance_variable_set('@filetype', :dir)
+      itm.base_dir_opts.should == {:base_dir => itm.path}
+    end
+
+    it "should return expected hash for files with a parent dir" do
+      itm = new_item('foo/bar.txt')
+      itm.instance_variable_set('@filetype', :file)
+      itm.base_dir_opts.should == {:base_dir => 'foo'}
+    end
+
+    it "should return an empty hash for files without a parent dir" do
+      itm = new_item('bar.txt')
+      itm.instance_variable_set('@filetype', :file)
+      itm.base_dir_opts.should == {}
     end
 
   end
