@@ -1,53 +1,16 @@
-TODO: Tests for Validator.
 TODO: Integration tests for other project styles.
 TODO: Check coverage.
-TODO: Improve report() output.
 TODO: Code documentation and comments.
 TODO: README
 TODO: LICENSE
 TODO: Release gem to github.
 TODO: Consider whether to support config-style syntax.
+TODO: Allow users to opt out of the extra-items check.
+TODO: Warning reporting needs to provide the base_dir within which the error occurs.
+TODO: Provide some tallies in output: dirs, files, missing, extra.
+TODO: Provide an option to include total file size among the tallies.
 
 Examples:
-
-    revs & ReidDennis
-
-        +   *.tif
-        1   checksums.txt
-        1   manifest.csv
-
-        file:
-          name: checksums.txt
-        file:
-          name: manifest.csv
-        files:
-          pattern: *.tif
-
-    rumsey
-
-        +   DRUID/
-        +     *.tif
-        1     descMetadata.xml
-
-        dirs:
-          re: DRUID
-          file:
-            name: descMetadata.xml
-          files:
-            pattern: *.tif
-
-    gould
-
-        +   BARCODE/
-        1     00/
-        +       *.jpg
-
-        dirs:
-          re: BARCODE
-          dir:
-            name: 00
-            files:
-              pattern: *.jpg
 
     AP & Hummel
 
@@ -70,33 +33,6 @@ Examples:
             files:
               pattern: *.tif
 
-    SOHP
-
-        Images
-            bc006dj2846_111_img_1.jpg
-            bc006dj2846_111_img_1.jpg.md5
-            bc006dj2846_111_img_2.jpg
-            bc006dj2846_111_img_2.jpg.md5
-        PM
-            bc006dj2846_111_a_pm.wav
-            bc006dj2846_111_a_pm.wav.md5
-            bc006dj2846_111_b_pm.wav
-            bc006dj2846_111_b_pm.wav.md5
-        SH
-            bc006dj2846_111_a_sh.wav
-            bc006dj2846_111_a_sh.wav.md5
-            bc006dj2846_111_b_sh.wav
-            bc006dj2846_111_b_sh.wav.md5
-        SL
-            bc006dj2846_111_a_sl.mp3
-            bc006dj2846_111_a_sl.mp3.md5
-            bc006dj2846_111_a_sl_techmd.xml
-            bc006dj2846_111_b_sl.mp3
-            bc006dj2846_111_b_sl.mp3.md5
-            bc006dj2846_111_b_sl_techmd.xml
-        preContentMetadata.xml
-
-
     Paired files
 
         *.xlsx
@@ -107,21 +43,3 @@ Examples:
           pattern: *.xlsx
           file:
             pattern: #{parent.basename}.docx
-
-
-Errors:
-
-    Did not find expected quantity.
-
-    Extra item found.
-      # Allow users to opt out of this check.
-
-
-Other info:
-
-  Tallies:
-    N of files
-    N of dirs
-    Total size.   # Not by default.
-
-  Tree output?  # Probably not.
