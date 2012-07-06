@@ -93,7 +93,8 @@ describe DirValidator::Validator do
       @dv.warnings.size.should == 1
       # Check the warning.
       w = @dv.warnings.first
-      w.message.should =~ /expected.+ got.+/
+      w.opts[:got].should == n - 1
+      w.opts[:n].should == n.to_s
     end
 
     it "should set Item.matched = true for all returned Items" do
@@ -311,12 +312,12 @@ describe DirValidator::Validator do
   end
 
   it "can exercise report()" do
-    @dv.add_warning('foo', 'blah')
-    @dv.add_warning('foo', 'blah')
+    @dv.add_warning('foo', :aa => 111, :bb => 222)
+    @dv.add_warning('bar', :aa => 333, :bb => 444)
     @dv.instance_variable_set('@validated', true)
     sio = StringIO.new
     @dv.report(sio)
-    sio.string.should == "foo: blah\nfoo: blah\n"
+    %w(foo bar 111 222 333 444).each { |s| sio.string.should =~ Regexp.new(s) }
   end
 
   it "validate() should add warning for each unmatched Item, and should run once" do

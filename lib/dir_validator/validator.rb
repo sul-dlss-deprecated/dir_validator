@@ -2,7 +2,8 @@ class DirValidator::Validator
 
   attr_reader(:root_path, :catalog, :warnings, :validated)
 
-  FILE_SEP = File::SEPARATOR
+  FILE_SEP  = File::SEPARATOR
+  EXTRA_VID = '_EXTRA_'
 
   def initialize(root_path)
     @root_path = root_path
@@ -81,7 +82,7 @@ class DirValidator::Validator
     # Add a warning if the N of Items is less than the user's expectation.
     sz = items.size
     unless sz >= quant.min_n
-      add_warning(vid, "expected #{quant.spec.inspect}, got #{sz}")
+      add_warning(vid, opts.merge(:got => sz))
     end
 
     # Mark the Items as matched. This means that subsequent validations
@@ -170,8 +171,8 @@ class DirValidator::Validator
   # Methods related validation warnings and reporting.
   ####
 
-  def add_warning(vid, message)
-    @warnings << DirValidator::Warning.new(vid, message)
+  def add_warning(vid, opts)
+    @warnings << DirValidator::Warning.new(vid, opts)
   end
 
   def report(io = STDOUT)
@@ -182,7 +183,7 @@ class DirValidator::Validator
   def validate
     return if @validated  # Run only once.
     @catalog.unmatched_items.each do |item|
-      add_warning('ExtraItem', item.path)
+      add_warning(EXTRA_VID, :path => item.path)
     end
     @validated = true
   end

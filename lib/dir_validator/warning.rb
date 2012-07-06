@@ -1,14 +1,14 @@
 class DirValidator::Warning
 
-  attr_reader(:vid, :message)
+  attr_reader(:vid, :opts)
 
-  def initialize(vid, message)
-    @vid     = vid
-    @message = message
+  def initialize(vid, opts)
+    @vid  = vid
+    @opts = opts
   end
 
   def to_s
-    return "#{@vid}: #{@message}"
+    return "#{@vid}: #{@opts.inspect}"
   end
 
 end

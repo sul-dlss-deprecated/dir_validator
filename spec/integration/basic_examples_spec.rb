@@ -4,6 +4,7 @@ describe("Integration tests: basic project examples", :integration => true) do
 
   before(:all) do
     @druid_re = /[a-z]{2} \d{3} [a-z]{2} \d{4}/x
+    @extra = DirValidator::Validator::EXTRA_VID
   end
 
   it "Revs" do
@@ -14,9 +15,9 @@ describe("Integration tests: basic project examples", :integration => true) do
       dir.files('checksums', :name => 'manifest.csv')
     end
     dv.validate
-    dv.warnings.map(&:to_s).should == [
-      'checksums: expected "1+", got 0',
-      'ExtraItem: blah.txt',
+    dv.warnings.map { |w| [w.vid, w.opts] }.should == [
+      ['checksums', {:base_dir=>"bb000bb0001", :name=>"manifest.csv", :got=>0} ],
+      [@extra,      {:path=>"blah.txt"} ],
     ]
   end
 
@@ -27,9 +28,9 @@ describe("Integration tests: basic project examples", :integration => true) do
       f.file('excel_files', :name => nm)
     end
     dv.validate
-    dv.warnings.map(&:to_s).should == [
-      'excel_files: expected "1", got 0',
-      'ExtraItem: foo.bar',
+    dv.warnings.map { |w| [w.vid, w.opts] }.should == [
+      ['excel_files', {:got=>0, :n=>"1", :name=>"c.xls"} ],
+      [@extra,        {:path=>"foo.bar"} ],
     ]
   end
 
@@ -46,9 +47,9 @@ describe("Integration tests: basic project examples", :integration => true) do
       end
     end
     dv.validate
-    dv.warnings.map(&:to_s).should == [
-      'jp2: expected "1", got 0',
-      'ExtraItem: aa000aa0001/00/blort.txt',
+    dv.warnings.map { |w| [w.vid, w.opts] }.should == [
+      ['jp2',  {:got=>0, :base_dir=>"bb000bb0001/02", :n=>"1", :name=>"b.jp2"} ],
+      [@extra, {:path=>"aa000aa0001/00/blort.txt"} ],
     ]
   end
 

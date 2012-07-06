@@ -41,14 +41,14 @@ describe("Integration tests: SOHP example", :integration => true) do
     end
 
     # Make sure we got the expected warnings.
+    extra = DirValidator::Validator::EXTRA_VID
     dv.validate
-    dv.warnings.map(&:to_s).should == [
-      'SL-techmd: expected "1", got 0',
-      'SL-techmd: expected "1", got 0',
-      'ExtraItem: aa000aa0001/Transcript',
-      'ExtraItem: aa000aa0001/Transcript/aa000aa0001.pdf',
+    dv.warnings.map { |w| [w.vid, w.opts] }.should == [
+      ["SL-techmd", {:got=>0, :base_dir=>"cc000cc0003/SL", :n=>"1", :name=>"cc000cc0003_181_a_sl_techmd.xml"}],
+      ["SL-techmd", {:got=>0, :base_dir=>"cc000cc0003/SL", :n=>"1", :name=>"cc000cc0003_181_b_sl_techmd.xml"}],
+      [extra,       {:path=>"aa000aa0001/Transcript"}],
+      [extra,       {:path=>"aa000aa0001/Transcript/aa000aa0001.pdf"}],
     ]
-
   end
 
 end
