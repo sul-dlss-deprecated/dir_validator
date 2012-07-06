@@ -1,5 +1,7 @@
 TODO: integration test for dirs() called on a dir Item
+        - need some warnings in the :outline fixtures
 TODO: integration test to exercise Quantity variants more fully
+TODO: check coverage for `rake rspec_unit` and `rake rspec_int`
 TODO: column-oriented CSV report
 TODO: Code documentation and comments.
 TODO: README

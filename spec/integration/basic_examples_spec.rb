@@ -53,4 +53,16 @@ describe("Integration tests: basic project examples", :integration => true) do
     ]
   end
 
+  it "Simple outline structure" do
+    dv = DirValidator.new(fixture_item(:outline))
+    dv.dirs('A..Z', :re => /\A[A-Z]\z/).each do |dir|
+      dir.dirs('a..z', :re => /\A[a-z]\z/).each do |sdir|
+        sdir.file('file', :name => 'data')
+      end
+    end
+    dv.validate
+    dv.warnings.map { |w| [w.vid, w.opts] }.should == [
+    ]
+  end
+
 end
