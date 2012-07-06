@@ -91,24 +91,34 @@ describe DirValidator::Item do
 
   end
 
-  describe "base_dir_opts()" do
+  describe "item_opts() should return expected hash" do
 
-    it "should return expected hash for directories" do
+    before(:each) do
+      @opts  = {:aaa => 111, :bbb => 222}
+      @other = {:ccc => 333, :ddd => 444}
+    end
+
+    it "directory: base_dir = Item.path" do
       itm = new_item('foo/bar')
       itm.instance_variable_set('@filetype', :dir)
-      itm.base_dir_opts.should == {:base_dir => itm.path}
+      exp = {:base_dir => itm.path}
+      itm.item_opts(@opts).should == @opts.merge(exp)
+      itm.item_opts(@opts, @other).should == @opts.merge(@other).merge(exp)
     end
 
-    it "should return expected hash for files with a parent dir" do
+    it "file with a parent dir: base_dir = Item.dirname" do
       itm = new_item('foo/bar.txt')
       itm.instance_variable_set('@filetype', :file)
-      itm.base_dir_opts.should == {:base_dir => 'foo'}
+      exp = {:base_dir => 'foo'}
+      itm.item_opts(@opts).should == @opts.merge(exp)
+      itm.item_opts(@opts, @other).should == @opts.merge(@other).merge(exp)
     end
 
-    it "should return an empty hash for files without a parent dir" do
+    it "file without a parent dir: no base_dir" do
       itm = new_item('bar.txt')
       itm.instance_variable_set('@filetype', :file)
-      itm.base_dir_opts.should == {}
+      itm.item_opts(@opts).should == @opts
+      itm.item_opts(@opts, @other).should == @opts.merge(@other)
     end
 
   end

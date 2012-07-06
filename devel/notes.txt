@@ -1,4 +1,3 @@
-TODO: Refactor Item.base_dir_opts to reduce duplication.
 TODO: integration test for dirs() called on a dir Item
 TODO: integration test to exercise Quantity variants more fully
 TODO: column-oriented CSV report

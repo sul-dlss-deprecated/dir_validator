@@ -34,32 +34,34 @@ class DirValidator::Item
   end
 
   def dirs(vid, opts = {})
-    opts = opts.merge(base_dir_opts)
-    return @validator.dirs(vid, opts)
+    return @validator.dirs(vid, item_opts(opts))
   end
 
   def files(vid, opts = {})
-    opts = opts.merge(base_dir_opts)
-    return @validator.files(vid, opts)
+    return @validator.files(vid, item_opts(opts))
   end
 
   def dir(vid, opts = {})
-    opts = opts.merge({:n => '1'}).merge(base_dir_opts)
-    return @validator.dirs(vid, opts)
+    return @validator.dirs(vid, item_opts(opts, :n => '1'))
   end
 
   def file(vid, opts = {})
-    opts = opts.merge({:n => '1'}).merge(base_dir_opts)
-    return @validator.files(vid, opts)
+    return @validator.files(vid, item_opts(opts, :n => '1'))
   end
 
-  def base_dir_opts
+  def item_opts(opts, other_opts = {})
+    # Takes one or two hashes of validation opts.
+    # Returns a new, merged hash of opts with the appropriate value
+    # for :base_dir. That value depends on whether the current Item
+    # is a dir or file, and whether the file has a parent dir.
+    opts = opts.merge(other_opts)
     if is_dir
-      return {:base_dir => @path}
+      opts = opts.merge(:base_dir => @path)
     else
-      dn = @pathname.dirname.to_s
-      return dn == '.' ? {} : {:base_dir => dn}
+      dn   = @pathname.dirname.to_s
+      opts = opts.merge(:base_dir => dn) unless dn == '.'
     end
+    return opts
   end
 
 end
