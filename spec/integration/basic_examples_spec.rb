@@ -62,6 +62,11 @@ describe("Integration tests: basic project examples", :integration => true) do
     end
     dv.validate
     dv.warnings.map { |w| [w.vid, w.opts] }.should == [
+      ["file", {:base_dir=>"A/x", :got=>0, :n=>"1", :name=>"data"}],
+      ["a..z", {:re=>/\A[a-z]\z/, :base_dir=>"Y", :got=>0}],
+      ["_EXTRA_", {:path=>"blort.txt"}],
+      ["_EXTRA_", {:path=>"D/blah.txt"}],
+      ["_EXTRA_", {:path=>"D/d/xxx.doc"}],
     ]
   end
 

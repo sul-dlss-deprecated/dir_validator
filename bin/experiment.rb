@@ -10,7 +10,7 @@ def main
   # load the Catalog
 
   dv.file('foobar', :name => 'bogus1.txt')
-  
+
   ds = dv.dirs('druid_dir', :re => /^(\w{11})$/, :n  => '1+')
   # When calling dirs(), dir(), files(), and file(), the user supplies:
   #   a validation identifier (will be used when reporting problems)

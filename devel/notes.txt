@@ -1,13 +1,13 @@
-TODO: integration test for dirs() called on a dir Item
-        - need some warnings in the :outline fixtures
-TODO: integration test to exercise Quantity variants more fully
-TODO: check coverage for `rake rspec_unit` and `rake rspec_int`
-TODO: column-oriented CSV report
+TODO: Integration tests: see coverage for `rake rspec_int`.
+TODO:   - quantity    several variants not tested.
+TODO:   - validator   dir(), file(), process_items(raise), report().
+TODO:   - warning.rb  to_s().
+TODO: Column-oriented CSV report.
 TODO: Code documentation and comments.
-TODO: README
-TODO: LICENSE
+TODO: README.
+TODO: LICENSE.
 TODO: Release gem to github.
-TODO: Allow users to opt out of the extra-items check.
-TODO: Provide some tallies in output: dirs, files, missing, extra.
-TODO: Provide an option to include total file size among the tallies.
+TODO: Option: suppress warning about extra items.
+TODO: Option: tallies: dirs, files, missing, extra.
+TODO: Option: tally: total file size.
 TODO: Consider whether to support config-style syntax.
