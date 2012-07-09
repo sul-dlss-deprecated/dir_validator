@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe("Integration tests: basic project examples", :integration => true) do
+describe("Integration tests: various project examples", :integration => true) do
 
   before(:all) do
     @druid_re = /[a-z]{2} \d{3} [a-z]{2} \d{4}/x
@@ -67,6 +67,24 @@ describe("Integration tests: basic project examples", :integration => true) do
       ["_EXTRA_", {:path=>"blort.txt"}],
       ["_EXTRA_", {:path=>"D/blah.txt"}],
       ["_EXTRA_", {:path=>"D/d/xxx.doc"}],
+    ]
+  end
+
+  it "Quantity variants" do
+    dv = DirValidator.new(fixture_item(:quantities))
+    dv.dirs('blahs', :re => /\Ablah/, :n => '+').each do |dir|
+      dir.dirs('blah-subdirs',         :pattern => 'd?',     :n => '*')
+      dir.dirs('blah-optional-subdir', :name    => 'xxx',    :n => '?')
+      dir.files('blah-files',          :re      => '\A[ab]', :n => '1+')
+      dir.files('blah-optional-file',  :name    => 'yyy',    :n => '0-1')
+    end
+    dv.file('xxx', :name => 'xxx')
+    dv.dir('yyy',  :name => 'yyy')
+    dv.files('foo-files', :pattern => 'foo.*', :n => '1-4')
+    dv.files('bar-files', :pattern => 'bar.*', :n => '2-5')
+    dv.validate
+    dv.warnings.map { |w| [w.vid, w.opts] }.should == [
+      ["bar-files", {:pattern=>"bar.*", :got=>1, :n=>"2-5"}],
     ]
   end
 

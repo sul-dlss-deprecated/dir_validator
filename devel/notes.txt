@@ -1,7 +1,3 @@
-TODO: Integration tests: see coverage for `rake rspec_int`.
-TODO:   - quantity    several variants not tested.
-TODO:   - validator   dir(), file(), process_items(raise), report().
-TODO:   - warning.rb  to_s().
 TODO: Column-oriented CSV report.
 TODO: Code documentation and comments.
 TODO: README.
