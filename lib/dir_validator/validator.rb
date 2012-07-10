@@ -175,17 +175,34 @@ class DirValidator::Validator
     @warnings << DirValidator::Warning.new(vid, opts)
   end
 
-  def report(io = STDOUT)
-    validate()
-    @warnings.each { |w| io.puts w }
-  end
-
   def validate
     return if @validated  # Run only once.
     @catalog.unmatched_items.each do |item|
       add_warning(EXTRA_VID, :path => item.path)
     end
     @validated = true
+  end
+
+  def report(io = STDOUT)
+    require 'csv'
+    validate()
+    report_data.each do |row|
+      io.puts CSV.generate_line(row)
+    end
+  end
+
+  def report_data
+    data = [report_columns]
+    @warnings.each do |w|
+      cells = report_columns.map { |c| v = w.opts[c]; v.nil? ? '' : v }
+      cells[0] = w.vid
+      data.push(cells)
+    end
+    return data
+  end
+
+  def report_columns
+    return [:vid, :got, :n, :base_dir, :name, :re, :pattern, :path]
   end
 
 end

@@ -290,18 +290,8 @@ describe DirValidator::Validator do
 
 
   ####
-  # Other methods.
+  # Reporting.
   ####
-
-  it "quantity_limited() works correctly" do
-    items = (0..10).to_a
-    specs = ['1+', '3', '3-5', '14']
-    qs    = specs.map { |s| DirValidator::Quantity.new(s) }
-    exp   = [-1, 2, 4, -1]
-    qs.zip(exp).each do |q, e|
-      @dv.quantity_limited(items, q).should == items[0..e]
-    end
-  end
 
   it "can exercise add_warning()" do
     @dv.warnings.size.should == 0
@@ -311,9 +301,18 @@ describe DirValidator::Validator do
     @dv.warnings.first.should be_kind_of DirValidator::Warning
   end
 
+  it "report_data() should return the expected array-of-arrays" do
+    @dv.add_warning('foo', :n  => '*', :path => 222, :base_dir => 'xx')
+    @dv.add_warning('bar', :re => 333, :pattern => 444, :got => 12, :name => 'yy')
+    @dv.report_data.should == [@dv.report_columns] + [
+      ['foo', '',  '*', 'xx', '',    '',  '',  222],
+      ['bar', 12,  '',  '',   'yy',  333, 444, ''],
+    ]
+  end
+
   it "can exercise report()" do
-    @dv.add_warning('foo', :aa => 111, :bb => 222)
-    @dv.add_warning('bar', :aa => 333, :bb => 444)
+    @dv.add_warning('foo', :n  => 111, :path => 222)
+    @dv.add_warning('bar', :re => 333, :pattern => 444)
     @dv.instance_variable_set('@validated', true)
     sio = StringIO.new
     @dv.report(sio)
@@ -332,6 +331,21 @@ describe DirValidator::Validator do
     @dv.validate
     @dv.warnings.size.should == mock_items.size
     @dv.validated.should == true
+  end
+
+
+  ####
+  # Other methods.
+  ####
+
+  it "quantity_limited() works correctly" do
+    items = (0..10).to_a
+    specs = ['1+', '3', '3-5', '14']
+    qs    = specs.map { |s| DirValidator::Quantity.new(s) }
+    exp   = [-1, 2, 4, -1]
+    qs.zip(exp).each do |q, e|
+      @dv.quantity_limited(items, q).should == items[0..e]
+    end
   end
 
 end

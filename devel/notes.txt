@@ -1,12 +1,3 @@
-TODO: Column-oriented CSV report.
-        :n
-        :base_dir
-        :got
-        :name
-        :re
-        :pattern
-        :path
-        :recurse
 TODO: Code documentation and comments.
 TODO: README.
 TODO: LICENSE.
