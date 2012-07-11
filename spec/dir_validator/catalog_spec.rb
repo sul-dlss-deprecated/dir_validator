@@ -61,16 +61,6 @@ describe DirValidator::Catalog do
     end
   end
 
-  it "can exercise dirs()" do
-    @cat.stub(:items).and_return(@mock_items)
-    @cat.dirs.size.should == 3
-  end
-
-  it "can exercise files()" do
-    @cat.stub(:items).and_return(@mock_items)
-    @cat.files.size.should == 5
-  end
-
   it "can exercise unmatched_items()" do
     @cat.stub(:items).and_return(@mock_items)
     @cat.unmatched_items.size.should == 5

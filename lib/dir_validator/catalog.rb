@@ -35,19 +35,11 @@ class DirValidator::Catalog
   end
 
   def unmatched_dirs
-    return dirs.reject { |i| i.matched }
+    return unmatched_items.select { |i| i.is_dir }
   end
 
   def unmatched_files
-    return files.reject { |i| i.matched }
-  end
-
-  def dirs
-    return items.select { |i| i.is_dir }
-  end
-
-  def files
-    return items.select { |i| i.is_file }
+    return unmatched_items.select { |i| i.is_file }
   end
 
 end

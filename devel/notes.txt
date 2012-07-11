@@ -1,9 +1,4 @@
-TODO: improve performance
-        - unmatched_items() should be the primary method
-            - all other Catalog methods should go through it
-        - when unmatched_items() is called
-            - should set Item.matched = true
-            - modify a hash, keeping track of the remaining unmatched items
+TODO: improve performance: when Validator marks Items as matched, also inform Catalog
 TODO: Code documentation and comments.
 TODO: README.
 TODO: LICENSE.
