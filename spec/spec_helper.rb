@@ -25,6 +25,7 @@ def p2i(paths)
   # Paths-to-Items. Takes a list of paths and returns
   # a list of Item objects. Paths ending in forward slash
   # will be treated as directories.
+  catalog_id = -1
   return paths.map do |p|
     if p.end_with?('/')
       filetype = :dir
@@ -32,7 +33,8 @@ def p2i(paths)
     else
       filetype = :file
     end
-    item = DirValidator::Item.new(nil, p)
+    catalog_id += 1
+    item = DirValidator::Item.new(nil, p, catalog_id)
     item.instance_variable_set('@filetype', filetype)
     item
   end

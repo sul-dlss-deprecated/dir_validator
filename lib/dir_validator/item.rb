@@ -3,12 +3,13 @@ require 'pathname'
 class DirValidator::Item
 
   attr_accessor(:matched, :target)
-  attr_reader(:pathname, :path, :match_data, :filetype)
+  attr_reader(:pathname, :path, :catalog_id, :match_data, :filetype)
 
-  def initialize(validator, path)
+  def initialize(validator, path, catalog_id = nil)
     @validator  = validator
     @pathname   = Pathname.new(path).cleanpath
     @path       = @pathname.to_s
+    @catalog_id = catalog_id
     @matched    = false
     @target     = nil
     @match_data = nil

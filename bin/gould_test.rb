@@ -1,5 +1,8 @@
 #! /usr/bin/env ruby
 
+# This script was used as a experiment to check performance with
+# a large directory structure (approximately 250K items).
+
 require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'boot'))
 
 dv = DirValidator.new(ARGV[0])

@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe DirValidator::Item do
 
-  def new_item(path)
-    return DirValidator::Item.new(nil, path)
+  def new_item(path, catalog_id = nil)
+    return DirValidator::Item.new(nil, path, catalog_id)
   end
 
   it "can initialize a Item" do
@@ -15,6 +15,11 @@ describe DirValidator::Item do
     itm.instance_variable_get('@pathname').should be_kind_of Pathname
     itm.path.should == 'foo/blah.txt'  # Path should be normalized.
     itm.basename.should == 'blah.txt'  # Can get basename.
+  end
+
+  it "should set catalog_id if given, otherwise nil" do
+    new_item('foo').catalog_id.should == nil
+    new_item('foo', 987).catalog_id.should == 987
   end
 
   it "should set filetype-related attributes correctly" do

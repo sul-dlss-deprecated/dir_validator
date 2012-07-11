@@ -4,18 +4,24 @@ describe DirValidator::Catalog do
 
   before(:each) do
     @cat  = DirValidator::Catalog.new(nil)
-    @mock_items = [
+    mock_params = [
       # Dirs.
-      double('item', :is_dir => true,  :is_file => false, :matched => true),
-      double('item', :is_dir => true,  :is_file => false, :matched => true),
-      double('item', :is_dir => true,  :is_file => false, :matched => false),
+      { :is_dir => true,   :matched => true },
+      { :is_dir => true,   :matched => true },
+      { :is_dir => true,   :matched => false },
       # Files.
-      double('item', :is_dir => false, :is_file => true,  :matched => true),
-      double('item', :is_dir => false, :is_file => true,  :matched => false),
-      double('item', :is_dir => false, :is_file => true,  :matched => false),
-      double('item', :is_dir => false, :is_file => true,  :matched => false),
-      double('item', :is_dir => false, :is_file => true,  :matched => false),
+      { :is_dir => false,  :matched => true },
+      { :is_dir => false,  :matched => false },
+      { :is_dir => false,  :matched => false },
+      { :is_dir => false,  :matched => false },
+      { :is_dir => false,  :matched => false },
     ]
+    @mock_items = mock_params.each_with_index.map { |ps, i|
+      double('item', ps.merge(:is_file => ! ps[:is_dir], :catalog_id => i))
+    }
+    @mock_unmatched = {}
+    @mock_items.each { |i| @mock_unmatched[i.catalog_id] = true unless i.matched  }
+    @cat.instance_variable_set('@unmatched', @mock_unmatched)
   end
 
   it "can initialize a Catalog" do
@@ -66,7 +72,7 @@ describe DirValidator::Catalog do
     @cat.unmatched_items.size.should == 5
   end
 
-  it "can exercise unmatched_dirs()" do
+  it "qqq can exercise unmatched_dirs()" do
     @cat.stub(:items).and_return(@mock_items)
     @cat.unmatched_dirs.size.should == 1
   end
@@ -74,6 +80,18 @@ describe DirValidator::Catalog do
   it "can exercise unmatched_files()" do
     @cat.stub(:items).and_return(@mock_items)
     @cat.unmatched_files.size.should == 4
+  end
+
+  it "mark_as_matched() should set Item.matched = true and prune the @unmatched hash" do
+    mock_paths = %w(a b bar/ bar/a bar/b)
+    sz = mock_paths.size
+    mock_unmatched = Hash[ (0 .. sz).map { |n| [n,true] } ]
+    @cat.stub(:items).and_return(p2i(mock_paths))
+    @cat.instance_variable_set('@unmatched', mock_unmatched)
+    @cat.items.all? { |i| i.matched == false }.should be_true
+    @cat.mark_as_matched(@cat.items)
+    @cat.items.all? { |i| i.matched == true  }.should be_true
+    @cat.instance_variable_get('@unmatched').should == { sz => true }
   end
 
 end

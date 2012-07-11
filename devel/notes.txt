@@ -1,4 +1,4 @@
-TODO: improve performance: when Validator marks Items as matched, also inform Catalog
+TODO: mark methods as private or protected
 TODO: Code documentation and comments.
 TODO: README.
 TODO: LICENSE.

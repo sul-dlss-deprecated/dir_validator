@@ -85,9 +85,8 @@ class DirValidator::Validator
       add_warning(vid, opts.merge(:got => sz))
     end
 
-    # Mark the Items as matched. This means that subsequent validations
-    # will not return the same Items.
-    items.each { |i| i.matched = true }
+    # Mark the Items as matched so subsequent validations won't return same Items.
+    @catalog.mark_as_matched(items)
 
     return items
   end
