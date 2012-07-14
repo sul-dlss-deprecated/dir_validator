@@ -1,4 +1,4 @@
-TODO: improve performance using Catalog.base_dir_index
+TODO: refactor, reorg, and tests for latest commits
 TODO: integration test exercising :recurse.
 TODO: integration test for a dir structure of arbitrary depth.
 TODO: mark methods as private or protected

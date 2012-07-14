@@ -231,11 +231,24 @@ describe DirValidator::Validator do
       @dv.normalized_base_dir({}).should == ''
     end
 
-    it "should return path with a trailing separator" do
+    it "should return path with a trailing separator if add_file_sep=true" do
       tests = [
         ['foo/bar',  'foo/bar/'],
         ['foo/bar/', 'foo/bar/'],
         ['.',        './'],
+      ]
+      tests.each do |bd, exp|
+        @dv.normalized_base_dir({:base_dir => bd}, true).should == exp
+      end
+    end
+
+    it "should return path without trailing separator if add_file_sep=false" do
+      tests = [
+        ['foo/bar',    'foo/bar'],
+        ['foo/bar/',   'foo/bar'],
+        ['foo/bar///', 'foo/bar'],
+        ['.',          '.'],
+        ['.////',      '.'],
       ]
       tests.each do |bd, exp|
         @dv.normalized_base_dir({:base_dir => bd}).should == exp

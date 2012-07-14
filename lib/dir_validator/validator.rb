@@ -44,11 +44,13 @@ class DirValidator::Validator
   ####
 
   def dirs(vid, opts = {})
-    return process_items(@catalog.unmatched_dirs, vid, opts)
+    bd = normalized_base_dir(opts)
+    return process_items(@catalog.unmatched_dirs(bd), vid, opts)
   end
 
   def files(vid, opts = {})
-    return process_items(@catalog.unmatched_files, vid, opts)
+    bd = normalized_base_dir(opts)
+    return process_items(@catalog.unmatched_files(bd), vid, opts)
   end
 
   def dir(vid, opts = {})
@@ -99,7 +101,7 @@ class DirValidator::Validator
   def name_filtered(items, opts)
     # Filter the items to those in the base_dir.
     # If there is no base_dir, no filtering occurs.
-    base_dir = normalized_base_dir(opts)
+    base_dir = normalized_base_dir(opts, true)
     sz       = base_dir.size
     items    = items.select { |i| i.path.start_with?(base_dir) } if sz > 0
 
@@ -115,12 +117,13 @@ class DirValidator::Validator
     return items.select { |i| i.target_match(rgx) }
   end
 
-  def normalized_base_dir(opts)
+  def normalized_base_dir(opts, add_file_sep = false)
     # Given some validation options, returns opts[:base_dir] in a normalized
     # form (with a trailing separator). Returns empty if the option is missing.
     bd = opts[:base_dir]
     return '' unless bd
-    bd += FILE_SEP unless bd.end_with?(FILE_SEP)
+    bd.chop! while bd.end_with?(FILE_SEP)
+    bd += FILE_SEP if add_file_sep
     return bd
   end
 

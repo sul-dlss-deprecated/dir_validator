@@ -9,7 +9,8 @@ class DirValidator::Catalog
   def initialize(validator)
     @validator = validator
     @items     = nil
-    @unmatched = {}    # Unmatched Items, with Item.catalog_id as the keys.
+    @unmatched = {}  # Index of unmatched Items, keyed using Item.catalog_id.
+    @bdi       = {}  # Index of Items, keyed using Item.base_dir.
   end
 
   def items
@@ -25,7 +26,11 @@ class DirValidator::Catalog
         catalog_id += 1
         i = DirValidator::Item.new(@validator, path, catalog_id)
         @items << i
-        @unmatched[i.catalog_id] = true
+        @unmatched[catalog_id] = true
+        dn = i.dirname
+        dn = '' if dn == '.'
+        @bdi[dn] = {} unless @bdi[dn]
+        @bdi[dn][catalog_id] = true
       end
     end
     return @items
@@ -35,17 +40,19 @@ class DirValidator::Catalog
     return path =~ DOTDIR_RE ? true : false
   end
 
-  def unmatched_items
-    its = items()
-    return @unmatched.keys.sort.map { |cid| its[cid] }
+  def unmatched_items(base_dir = nil)
+    all_items = items()
+    return @unmatched.keys.sort.map { |i| all_items[i] } unless base_dir
+    return [] unless @bdi[base_dir]
+    return @bdi[base_dir].keys.sort.map { |i| all_items[i] }.reject { |item| item.matched }
   end
 
-  def unmatched_dirs
-    return unmatched_items.select { |i| i.is_dir }
+  def unmatched_dirs(base_dir = nil)
+    return unmatched_items(base_dir).select { |i| i.is_dir }
   end
 
-  def unmatched_files
-    return unmatched_items.select { |i| i.is_file }
+  def unmatched_files(base_dir = nil)
+    return unmatched_items(base_dir).select { |i| i.is_file }
   end
 
   def mark_as_matched(items)
