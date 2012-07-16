@@ -43,6 +43,7 @@ describe DirValidator::Validator do
     before(:each) do
       @items = p2i(@mock_paths)
       @vid   = 'test'
+      @dv.catalog.stub(:delete_from_index)
     end
 
     it "can exercise the methods" do
@@ -65,6 +66,7 @@ describe DirValidator::Validator do
       @items      = p2i(@mock_paths)
       @vid        = 'test'
       @root_paths = @mock_paths.reject { |i| i =~ /\// }
+      @dv.catalog.stub(:mark_as_matched)
     end
 
     it "should raise ArgumentError if user forgets to pass validation identifier" do
@@ -76,6 +78,7 @@ describe DirValidator::Validator do
     end
 
     it "should return return no more than the max quantity" do
+      @dv.catalog.stub(:delete_from_index)
       @dv.process_items(@items, @vid, {:n => '0-3'}).size.should == 3
       @dv.process_items(@items, @vid, {:n => '2'}).size.should == 2
       @dv.process_items(@items, @vid, {:n => '1-99'}).size.should == @root_paths.size
@@ -95,11 +98,6 @@ describe DirValidator::Validator do
       w = @dv.warnings.first
       w.opts[:got].should == n - 1
       w.opts[:n].should == n.to_s
-    end
-
-    it "should set Item.matched = true for all returned Items" do
-      @items.any? { |i| i.matched }.should == false
-      @dv.process_items(@items, @vid, {}).all? { |i| i.matched }.should == true
     end
 
   end
@@ -326,7 +324,7 @@ describe DirValidator::Validator do
   it "can exercise report()" do
     @dv.add_warning('foo', :n  => 111, :path => 222)
     @dv.add_warning('bar', :re => 333, :pattern => 444)
-    @dv.instance_variable_set('@validated', true)
+    ivset(@dv, :validated, true)
     sio = StringIO.new
     @dv.report(sio)
     %w(foo bar 111 222 333 444).each { |s| sio.string.should =~ Regexp.new(s) }

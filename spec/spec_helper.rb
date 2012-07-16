@@ -35,7 +35,18 @@ def p2i(paths)
     end
     catalog_id += 1
     item = DirValidator::Item.new(nil, p, catalog_id)
-    item.instance_variable_set('@filetype', filetype)
+    ivset(item, :filetype, filetype)
     item
   end
 end
+
+def ivget(obj, var)
+  # Convenience method to get instance variables.
+  return obj.instance_variable_get('@' + var.to_s)
+end
+
+def ivset(obj, var, val)
+  # Convenience method to set instance variables.
+  obj.instance_variable_set('@' + var.to_s, val)
+end
+

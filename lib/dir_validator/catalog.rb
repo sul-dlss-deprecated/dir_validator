@@ -4,8 +4,6 @@ class DirValidator::Catalog
   DOTDIR    = '\.\.?\z'                      # A dotdir is . or .. at end-of-string,
   DOTDIR_RE = / ( \A | #{FS} ) #{DOTDIR} /x  # preceded by start-of-string or file-sep.
 
-  attr_accessor(:validator)
-
   def initialize(validator)
     @validator = validator
     @items     = nil
@@ -24,13 +22,9 @@ class DirValidator::Catalog
       Dir.glob('**/*', File::FNM_DOTMATCH).each do |path|
         next if path_is_dot_dir(path)
         catalog_id += 1
-        i = DirValidator::Item.new(@validator, path, catalog_id)
-        @items << i
-        @unmatched[catalog_id] = true
-        dn = i.dirname
-        dn = '' if dn == '.'
-        @bdi[dn] = {} unless @bdi[dn]
-        @bdi[dn][catalog_id] = true
+        item = DirValidator::Item.new(@validator, path, catalog_id)
+        @items << item
+        add_to_index(item)
       end
     end
     return @items
@@ -55,11 +49,26 @@ class DirValidator::Catalog
     return unmatched_items(base_dir).select { |i| i.is_file }
   end
 
-  def mark_as_matched(items)
-    items.each do |i|
+  def mark_as_matched(matched_items)
+    matched_items.each do |i|
       i.matched = true
-      @unmatched.delete(i.catalog_id)
+      delete_from_index(i)
     end
+  end
+
+  def add_to_index(item)
+    cid = item.catalog_id
+    dn  = item.dirname2
+    @bdi[dn] = {} unless @bdi[dn]
+    @bdi[dn][cid]   = true
+    @unmatched[cid] = true
+  end
+
+  def delete_from_index(item)
+    cid = item.catalog_id
+    dn  = item.dirname2
+    @bdi[dn].delete(cid)
+    @unmatched.delete(cid)
   end
 
 end

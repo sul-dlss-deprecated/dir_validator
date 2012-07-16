@@ -12,9 +12,20 @@ describe DirValidator::Item do
 
   it "should have set path-related attributes correctly" do
     itm = new_item('./foo/bar/fubb/../.././blah.txt')
-    itm.instance_variable_get('@pathname').should be_kind_of Pathname
+    ivget(itm, :pathname).should be_kind_of Pathname
     itm.path.should == 'foo/blah.txt'  # Path should be normalized.
     itm.basename.should == 'blah.txt'  # Can get basename.
+  end
+
+  it "should set dirname and dirname2 correctly" do
+    # If there is a parent dir, dirname and dirname2 should agree.
+    itm = new_item('foo/blah.txt')
+    itm.dirname.should == 'foo'
+    itm.dirname2.should == 'foo'
+    # If no parent dir, they will differ.
+    itm = new_item('blah.txt')
+    itm.dirname.should == '.'
+    itm.dirname2.should == ''
   end
 
   it "should set catalog_id if given, otherwise nil" do
@@ -41,22 +52,26 @@ describe DirValidator::Item do
     itm.basename('.rb').should == 'bar'
   end
 
-  it "target_match() should return MatchData and store it for later use" do
-    itm = new_item('.')
-    itm.target = 'aabb'
-    m = itm.target_match(/(a+)(b+)/)
-    m[0].should == 'aabb'
-    m[1].should == 'aa'
-    itm.match_data.should be_kind_of MatchData
-    itm.match_data[2].should == 'bb'
-  end
+  describe "target_match()" do
+    
+    it "should return MatchData and store it for later use" do
+      itm = new_item('.')
+      itm.target = 'aabb'
+      m = itm.target_match(/(a+)(b+)/)
+      m[0].should == 'aabb'
+      m[1].should == 'aa'
+      itm.match_data.should be_kind_of MatchData
+      itm.match_data[2].should == 'bb'
+    end
 
-  it "target_match() should return nil if the match fails" do
-    itm = new_item('.')
-    itm.target = 'zzzz'
-    m = itm.target_match(/a/)
-    m.should == nil
-    itm.match_data.should == nil
+    it "should return nil if the match fails" do
+      itm = new_item('.')
+      itm.target = 'zzzz'
+      m = itm.target_match(/a/)
+      m.should == nil
+      itm.match_data.should == nil
+    end
+
   end
 
   describe "can call validation methods on Item objects" do
@@ -105,7 +120,7 @@ describe DirValidator::Item do
 
     it "directory: base_dir = Item.path" do
       itm = new_item('foo/bar')
-      itm.instance_variable_set('@filetype', :dir)
+      ivset(itm, :filetype, :dir)
       exp = {:base_dir => itm.path}
       itm.item_opts(@opts).should == @opts.merge(exp)
       itm.item_opts(@opts, @other).should == @opts.merge(@other).merge(exp)
@@ -113,7 +128,7 @@ describe DirValidator::Item do
 
     it "file with a parent dir: base_dir = Item.dirname" do
       itm = new_item('foo/bar.txt')
-      itm.instance_variable_set('@filetype', :file)
+      ivset(itm, :filetype, :file)
       exp = {:base_dir => 'foo'}
       itm.item_opts(@opts).should == @opts.merge(exp)
       itm.item_opts(@opts, @other).should == @opts.merge(@other).merge(exp)
@@ -121,7 +136,7 @@ describe DirValidator::Item do
 
     it "file without a parent dir: no base_dir" do
       itm = new_item('bar.txt')
-      itm.instance_variable_set('@filetype', :file)
+      ivset(itm, :filetype, :file)
       itm.item_opts(@opts).should == @opts
       itm.item_opts(@opts, @other).should == @opts.merge(@other)
     end
