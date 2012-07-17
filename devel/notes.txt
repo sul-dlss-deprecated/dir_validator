@@ -1,3 +1,4 @@
+TODO: :recurse option does not work now that we use the @bdi index
 TODO: integration test exercising :recurse.
 TODO: mark methods as private or protected, and check attribute access
 TODO: Code documentation and comments.
