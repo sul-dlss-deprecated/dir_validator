@@ -1,5 +1,4 @@
 TODO: integration test exercising :recurse.
-TODO: integration test for a dir structure of arbitrary depth.
 TODO: mark methods as private or protected, and check attribute access
 TODO: Code documentation and comments.
 TODO: README.
