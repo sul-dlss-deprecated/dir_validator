@@ -44,12 +44,12 @@ class DirValidator::Validator
   ####
 
   def dirs(vid, opts = {})
-    bd = normalized_base_dir(opts)
+    bd = normalized_base_dir(opts, :handle_recurse => true)
     return process_items(@catalog.unmatched_dirs(bd), vid, opts)
   end
 
   def files(vid, opts = {})
-    bd = normalized_base_dir(opts)
+    bd = normalized_base_dir(opts, :handle_recurse => true)
     return process_items(@catalog.unmatched_files(bd), vid, opts)
   end
 
@@ -101,7 +101,7 @@ class DirValidator::Validator
   def name_filtered(items, opts)
     # Filter the items to those in the base_dir.
     # If there is no base_dir, no filtering occurs.
-    base_dir = normalized_base_dir(opts, true)
+    base_dir = normalized_base_dir(opts, :add_file_sep => true)
     sz       = base_dir.size
     items    = items.select { |i| i.path.start_with?(base_dir) } if sz > 0
 
@@ -117,13 +117,15 @@ class DirValidator::Validator
     return items.select { |i| i.target_match(rgx) }
   end
 
-  def normalized_base_dir(opts, add_file_sep = false)
+  def normalized_base_dir(opts, nbd_opts = {})
     # Given some validation options, returns opts[:base_dir] in a normalized
-    # form (with a trailing separator). Returns empty if the option is missing.
+    # form (with a trailing separator). Returns empty if the option is missing,
+    # and returns nil when we need to handle the :recurse option.
+    return nil if opts[:recurse] and nbd_opts[:handle_recurse]
     bd = opts[:base_dir]
     return '' unless bd
     bd.chop! while bd.end_with?(FILE_SEP)
-    bd += FILE_SEP if add_file_sep
+    bd += FILE_SEP if nbd_opts[:add_file_sep]
     return bd
   end
 

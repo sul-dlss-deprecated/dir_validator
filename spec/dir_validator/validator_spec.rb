@@ -225,7 +225,18 @@ describe DirValidator::Validator do
 
   describe "normalized_base_dir()" do
 
-    it "should return empty string if :base_dir is not among the validation options" do
+    it "should return nil if we are handling the :recurse option" do
+      # Normal behavior.
+      opts = {:base_dir => 'foo//'}
+      @dv.normalized_base_dir(opts).should == 'foo'
+      # Still normal behavior, even though :recurse => true.
+      opts.merge!(:recurse => true)
+      @dv.normalized_base_dir(opts).should == 'foo'
+      # Now return nil.
+      @dv.normalized_base_dir(opts, :handle_recurse => true).should == nil
+    end
+
+    it "should return '' if :base_dir is not among the validation options" do
       @dv.normalized_base_dir({}).should == ''
     end
 
@@ -236,7 +247,7 @@ describe DirValidator::Validator do
         ['.',        './'],
       ]
       tests.each do |bd, exp|
-        @dv.normalized_base_dir({:base_dir => bd}, true).should == exp
+        @dv.normalized_base_dir({:base_dir => bd}, :add_file_sep => true).should == exp
       end
     end
 

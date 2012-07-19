@@ -102,4 +102,21 @@ describe("Integration tests: various project examples", :integration => true) do
     ]
   end
 
+  it "Using the :recurse option" do
+    dv = DirValidator.new(fixture_item(:depth))
+    dir_params = {
+      :re      => /(\A|#{Regexp.quote File::SEPARATOR})a\z/,
+      :n       => '+',
+      :recurse => true,
+    }
+    dv.dirs('top-dir', dir_params).each do |dir|
+      dir.file('d-file', :name => 'd.txt')
+    end
+    dv.validate
+    dv.warnings.map { |w| [w.vid, w.opts] }.should == [
+      ["d-file", {:got=>0, :base_dir=>"a/a/a", :n=>"1", :name=>"d.txt"}],
+      [@extra,   {:path=>"a/a/a/blah.txt"}],
+    ]
+  end
+
 end
