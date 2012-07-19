@@ -2,8 +2,16 @@ require 'pathname'
 
 class DirValidator::Item
 
-  attr_accessor(:matched, :target)
-  attr_reader(:pathname, :path, :dirname, :dirname2, :catalog_id, :match_data, :filetype)
+  attr_reader(
+    :pathname,
+    :path,
+    :dirname,
+    :dirname2,
+    :catalog_id,
+    :matched,
+    :target,
+    :match_data,
+    :filetype)
 
   def initialize(validator, path, catalog_id = nil)
     @validator  = validator
@@ -64,6 +72,14 @@ class DirValidator::Item
       opts = opts.merge(:base_dir => @dirname) unless @dirname == '.'
     end
     return opts
+  end
+
+  def mark_as_matched
+    @matched = true
+  end
+
+  def set_target(t)
+    @target = t
   end
 
 end

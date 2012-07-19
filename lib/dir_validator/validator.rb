@@ -107,7 +107,7 @@ class DirValidator::Validator
 
     # Set the item.target values.
     # If there is no base_dir, the target is the same as item.path.
-    items.each { |i| i.target = i.path[sz .. -1] }
+    items.each { |i| i.set_target(i.path[sz .. -1]) }
 
     # Filter items to immediate children, unless user wants to recurse.
     items = items.reject { |i| i.target.include?(FILE_SEP) } unless opts[:recurse]

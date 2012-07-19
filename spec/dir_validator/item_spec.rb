@@ -56,7 +56,7 @@ describe DirValidator::Item do
     
     it "should return MatchData and store it for later use" do
       itm = new_item('.')
-      itm.target = 'aabb'
+      itm.set_target('aabb')
       m = itm.target_match(/(a+)(b+)/)
       m[0].should == 'aabb'
       m[1].should == 'aa'
@@ -66,7 +66,7 @@ describe DirValidator::Item do
 
     it "should return nil if the match fails" do
       itm = new_item('.')
-      itm.target = 'zzzz'
+      itm.set_target('zzzz')
       m = itm.target_match(/a/)
       m.should == nil
       itm.match_data.should == nil
@@ -141,6 +141,21 @@ describe DirValidator::Item do
       itm.item_opts(@opts, @other).should == @opts.merge(@other)
     end
 
+  end
+
+  it "mark_as_matched() should work" do
+    itm = new_item('bar.txt')
+    itm.matched.should == false
+    itm.mark_as_matched
+    itm.matched.should == true
+  end
+
+  it "set_target() should work" do
+    itm = new_item('bar.txt')
+    itm.target.should == nil
+    exp = 'blah'
+    itm.set_target(exp)
+    itm.target.should == exp
   end
 
 end

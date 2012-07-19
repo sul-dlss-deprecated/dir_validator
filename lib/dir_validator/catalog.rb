@@ -51,7 +51,7 @@ class DirValidator::Catalog
 
   def mark_as_matched(matched_items)
     matched_items.each do |i|
-      i.matched = true
+      i.mark_as_matched
       delete_from_index(i)
     end
   end
