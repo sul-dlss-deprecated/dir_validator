@@ -39,6 +39,14 @@ class DirValidator::Item
     return @filetype == :file
   end
 
+  def mark_as_matched
+    @matched = true
+  end
+
+  def set_target(t)
+    @target = t
+  end
+
   def target_match(regex)
     @match_data = regex.match(@target)
     return @match_data
@@ -72,14 +80,6 @@ class DirValidator::Item
       opts = opts.merge(:base_dir => @dirname) unless @dirname == '.'
     end
     return opts
-  end
-
-  def mark_as_matched
-    @matched = true
-  end
-
-  def set_target(t)
-    @target = t
   end
 
 end

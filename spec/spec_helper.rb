@@ -49,4 +49,3 @@ def ivset(obj, var, val)
   # Convenience method to set instance variables.
   obj.instance_variable_set('@' + var.to_s, val)
 end
-
