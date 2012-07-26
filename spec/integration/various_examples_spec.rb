@@ -37,9 +37,9 @@ describe("Integration tests: various project examples", :integration => true) do
   it "Hummel" do
     dv = DirValidator.new(fixture_item(:hummel))
     dv.dirs('druid_dirs', :re => @druid_re).each do |dir|
-      d0 = dir.dir('00', :name => '00').first
-      d1 = dir.dir('01', :name => '01').first
-      d2 = dir.dir('02', :name => '02').first
+      d0 = dir.dir('00', :name => '00')
+      d1 = dir.dir('01', :name => '01')
+      d2 = dir.dir('02', :name => '02')
       d0.files('tifs', :pattern => '*.tif').each do |tif|
         tif_base = tif.basename('.tif')
         d1.file('jpg', :name => tif_base + '.jpg')

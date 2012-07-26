@@ -54,8 +54,8 @@ describe DirValidator::Validator do
       @dv.catalog.stub(:unmatched_files).and_return(fs)
       @dv.dirs(@vid,  opts).should == ds
       @dv.files(@vid, opts).should == fs
-      @dv.dir(@vid,   opts).should == [ds.first]
-      @dv.file(@vid,  opts).should == [fs.first]
+      @dv.dir(@vid,   opts).should == ds.first
+      @dv.file(@vid,  opts).should == fs.first
     end
 
   end

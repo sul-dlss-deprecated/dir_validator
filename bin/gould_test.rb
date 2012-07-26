@@ -9,7 +9,7 @@ dv = DirValidator.new(ARGV[0])
 
 dv.dirs('barcode-dir', :re => '\A(\d{14})(_old)?\z', :n  => '1+').each do |bar_dir|
   bar_code = bar_dir.match_data[1]
-  content_dir = bar_dir.dir('00-dir', :name => '00').first
+  content_dir = bar_dir.dir('00-dir', :name => '00')
   content_dir.files('jpg-files', :re => /\A#{bar_code}_(00_)?\d{4}\.jpg\z/)
 end
 

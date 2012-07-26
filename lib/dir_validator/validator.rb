@@ -55,12 +55,12 @@ class DirValidator::Validator
 
   def dir(vid, opts = {})
     opts = opts.merge({:n => '1'})
-    return dirs(vid, opts)
+    return dirs(vid, opts).first
   end
 
   def file(vid, opts = {})
     opts = opts.merge({:n => '1'})
-    return files(vid, opts)
+    return files(vid, opts).first
   end
 
   def process_items(items, vid, opts = {})

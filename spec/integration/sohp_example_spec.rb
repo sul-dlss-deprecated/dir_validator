@@ -14,10 +14,10 @@ describe("Integration tests: SOHP example", :integration => true) do
       dir.file('preCM', :name => 'preContentMetadata.xml')
 
       # Assert existince of the top-level subdirs, and store them for later use.
-      img = dir.dir('Images', :name => 'Images').first
-      pm  = dir.dir('PM',     :name => 'PM').first
-      sl  = dir.dir('SL',     :name => 'SL').first
-      sh  = dir.dir('SH',     :name => 'SH').first
+      img = dir.dir('Images', :name => 'Images')
+      pm  = dir.dir('PM',     :name => 'PM')
+      sl  = dir.dir('SL',     :name => 'SL')
+      sh  = dir.dir('SH',     :name => 'SH')
 
       # Assert existence of the content of the Images subdir.
       # We also store part of their file name for later use (druid_n).

@@ -61,25 +61,25 @@ class DirValidator::Item
   end
 
   def dir(vid, opts = {})
-    return @validator.dirs(vid, item_opts(opts, :n => '1'))
+    return @validator.dir(vid, item_opts(opts))
   end
 
   def file(vid, opts = {})
-    return @validator.files(vid, item_opts(opts, :n => '1'))
+    return @validator.file(vid, item_opts(opts))
   end
 
-  def item_opts(opts, other_opts = {})
-    # Takes one or two hashes of validation opts.
-    # Returns a new, merged hash of opts with the appropriate value
+  def item_opts(opts)
+    # Takes a hash of validation opts.
+    # Returns a new hash of opts with the appropriate value
     # for :base_dir. That value depends on whether the current Item
     # is a dir or file, and whether the file has a parent dir.
-    opts = opts.merge(other_opts)
     if is_dir
-      opts = opts.merge(:base_dir => @path)
+      return opts.merge(:base_dir => @path)
+    elsif @dirname == '.'
+      return opts
     else
-      opts = opts.merge(:base_dir => @dirname) unless @dirname == '.'
+      return opts.merge(:base_dir => @dirname)
     end
-    return opts
   end
 
 end

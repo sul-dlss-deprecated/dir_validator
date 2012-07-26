@@ -52,10 +52,10 @@ def druid_dir_validator(dir)
   druid = dir.basename
   # Items provide various convenience methods to obtain file name components.
 
-  img = dir.dir('Images', :name => 'Images').first
-  pm  = dir.dir('PM',     :name => 'PM').first
-  sl  = dir.dir('SL',     :name => 'SL').first
-  sh  = dir.dir('SH',     :name => 'SH').first
+  img = dir.dir('Images', :name => 'Images')
+  pm  = dir.dir('PM',     :name => 'PM')
+  sl  = dir.dir('SL',     :name => 'SL')
+  sh  = dir.dir('SH',     :name => 'SH')
   # dir() returns a Catalog item ... (same as above)
 
   druid_n = nil

@@ -98,14 +98,14 @@ describe DirValidator::Item do
     end
 
     it "dir()" do
-      hi = hash_including(:n => '1', :base_dir => @path)
-      @dv.should_receive(:dirs).with(@vid, hi).and_return(@exp)
+      hi = hash_including(:base_dir => @path)
+      @dv.should_receive(:dir).with(@vid, hi).and_return(@exp)
       DirValidator::Item.new(@dv, @path).dir(@vid, @opts).should == @exp
     end
 
     it "file()" do
-      hi = hash_including(:n => '1', :base_dir => @path)
-      @dv.should_receive(:files).with(@vid, hi).and_return(@exp)
+      hi = hash_including(:base_dir => @path)
+      @dv.should_receive(:file).with(@vid, hi).and_return(@exp)
       DirValidator::Item.new(@dv, @path).file(@vid, @opts).should == @exp
     end
 
@@ -114,8 +114,7 @@ describe DirValidator::Item do
   describe "item_opts() should return expected hash" do
 
     before(:each) do
-      @opts  = {:aaa => 111, :bbb => 222}
-      @other = {:ccc => 333, :ddd => 444}
+      @opts = {:aaa => 111, :bbb => 222}
     end
 
     it "directory: base_dir = Item.path" do
@@ -123,7 +122,6 @@ describe DirValidator::Item do
       ivset(itm, :filetype, :dir)
       exp = {:base_dir => itm.path}
       itm.item_opts(@opts).should == @opts.merge(exp)
-      itm.item_opts(@opts, @other).should == @opts.merge(@other).merge(exp)
     end
 
     it "file with a parent dir: base_dir = Item.dirname" do
@@ -131,14 +129,12 @@ describe DirValidator::Item do
       ivset(itm, :filetype, :file)
       exp = {:base_dir => 'foo'}
       itm.item_opts(@opts).should == @opts.merge(exp)
-      itm.item_opts(@opts, @other).should == @opts.merge(@other).merge(exp)
     end
 
     it "file without a parent dir: no base_dir" do
       itm = new_item('bar.txt')
       ivset(itm, :filetype, :file)
       itm.item_opts(@opts).should == @opts
-      itm.item_opts(@opts, @other).should == @opts.merge(@other)
     end
 
   end
