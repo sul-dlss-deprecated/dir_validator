@@ -1,23 +1,146 @@
 = dir_validate gem
 
-==Overview 
+== Synopsis
 
-This gem 
+  require 'dir_validator'
+  dv = DirValidator.new('some/path')
+  dv.dirs('blah', :pattern => '*').each do |subdir|
+    # More validations.
+  end
+  dv.report()
 
-==Releases
+
+== Overview
+
+This gem provides a convenient syntax for checking whether the contents of a
+directory structure match your expectations.
+
+The best place to start is by reading through the runnable introduction in
+bin/readme_demo.rb.
+
+The public API for the gem is fairly simple. First you set up the validator by
+passing in the path to the directory structure that you want to check.
+
+  require 'dir_validator'
+  dv = DirValidator.new('some/path')
+
+Then you set up your expectations regarding the content of the directory
+structure. This is done by invoking the four methods used to declare
+particular validations: 
+
+  dirs()
+  files()
+  dir()
+  file()
+
+The validation methods use the following syntax:
+
+  dirs(VID, OPTS)
+
+  # where VID  = The validation identifier.
+  #              Can be any string meaningful to the user.
+  #              Used when reporting warnings.
+  #
+  #       OPTS = A hash of options to set up expectations regarding
+  #              the names of files or directory as well as their
+  #              quantity.
+
+The plural validation methods return an array of DirValidator::Item objects.
+The singular variants return one such object (or nil). The returned objects are
+those that (a) meet the criteria specified in the OPTS hash, and (b) have not
+been matched already by prior validations.
+
+The validation criteria defined in the OPTS hash come in three general types:
+
+* Name-related criteria affect whether a particular DirValidator::Item will be
+  returned (only if its file or directory name matches the criteria). You can
+  supply one of the following:
+
+    :name     # A literal string.
+    :re       # A regular expression, supplied as either a Regexp or String.
+    :pattern  # A glob-like pattern. Supports only the * and ? wildcards.
+
+* Quantity assertions. These control the maximum number of DirValidator::Item
+  objects that will be returned. They also generate a warning if too few are
+  found.
+
+    :n   # A string in one of the following forms:
+         #     '*'         Zero or more.
+         #     '+'         One or more.
+         #     '?'         Zero or one.
+         #     'n+'        n or more
+         #     'n'         Exactly n.
+         #     'm-n'       m through n, inclusive.
+
+* Other attributes:
+
+    :recurse  # Boolean.
+              # Normally, validation methods find only the immediate
+              # children of the object upon which the method is called. If
+              # this option is true, items deeper in the hierarchy can be
+              # discovered. For example, given this content:
+  
+              # some/path/
+              #   foo/
+              #     bar/
+              #       foo/
+
+              # And this validator.
+              dv = DirValidator.new('some/path')
+
+              # This call would return only the 'foo' directory.
+              dv.dirs('a', :re => /foo$/)
+
+              # Whereas this call would return both 'foo' and 'foo/bar/foo'.
+              dv.dirs('a', :re => /foo$/, :recurse => true)
+
+After the validations have been defined, you can examine the results programmatically:
+
+  dv.validate()
+  dv.warnings.each do |w|
+    puts w.vid
+    puts w.opts.inpsect
+  end
+
+More commonly, you can print the information contained in the warnings in the form
+of a basic CSV repot.
+
+  dv.report()
+
+The warnings and the CSV report contain the following information:
+
+  vid       # Validation identifier, as discussed above.
+  got       # N of items found.
+  n         # A normalized version of the :n optionn discussed above.
+  base_dir  # The parent directory of the item.
+  name      # The name-related options discussed above.
+  re        #  "
+  pattern   #  "
+  path      # The path of the item.
+
+
+== Known issues
+
+Currently handles only regular files and directories.
+
+
+== Releases
 
 - 0.0.1 initial release
 
-==Usage
 
-Blah.
+== Running tests
 
-==Running tests
+  bundle exec rspec spec
 
-	bundle exec rspec spec
 
-==Generate documentation
+== Generating documentation
 
 To generate documentation into the doc folder:
 
-	yard
+  yard doc
+
+
+== Copyright
+
+Copyright © 2012 Stanford University Library. See LICENSE for details.

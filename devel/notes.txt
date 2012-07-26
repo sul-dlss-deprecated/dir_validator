@@ -1,8 +1,27 @@
-TODO: Code documentation and comments.
-TODO: README.
-TODO: LICENSE.
-TODO: Release gem to github.
-TODO: Option: suppress warning about extra items.
-TODO: Option: tallies: dirs, files, missing, extra.
-TODO: Option: tally: total file size.
-TODO: Consider whether to support config-style syntax.
+------------
+Current work
+------------
+
+Code documentation and comments.
+
+README.
+
+Release gem to github.
+
+-----------
+Future work
+-----------
+
+Test on Windows.
+
+Validations: items() and item().
+
+Decide how to handle symbolic links.
+
+Option: suppress warning about extra items.
+
+Option: tallies: dirs, files, missing, extra.
+
+Option: tally: total file size.
+
+Consider whether to support config-style syntax.
