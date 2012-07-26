@@ -6,7 +6,12 @@ Code documentation and comments.
 
 README.
 
+Add readme_demo.rb to integration tests.
+
+Move experiment.rb and gould_test to devel.
+
 Release gem to github.
+
 
 -----------
 Future work
