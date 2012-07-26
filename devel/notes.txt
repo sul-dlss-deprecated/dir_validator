@@ -4,11 +4,9 @@ Current work
 
 Code documentation and comments.
 
-README.
+README: wrap up.
 
 Add readme_demo.rb to integration tests.
-
-Move experiment.rb and gould_test to devel.
 
 Release gem to github.
 
