@@ -196,16 +196,17 @@ class DirValidator::Validator
   end
 
   def report_data
-    data = [report_columns]
+    rc = DirValidator::Validator.report_columns
+    data = [rc]
     @warnings.each do |w|
-      cells = report_columns.map { |c| v = w.opts[c]; v.nil? ? '' : v }
+      cells = rc.map { |c| v = w.opts[c]; v.nil? ? '' : v }
       cells[0] = w.vid
       data.push(cells)
     end
     return data
   end
 
-  def report_columns
+  def self.report_columns
     return [:vid, :got, :n, :base_dir, :name, :re, :pattern, :path]
   end
 

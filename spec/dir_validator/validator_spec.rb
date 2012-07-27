@@ -326,7 +326,7 @@ describe DirValidator::Validator do
   it "report_data() should return the expected array-of-arrays" do
     @dv.add_warning('foo', :n  => '*', :path => 222, :base_dir => 'xx')
     @dv.add_warning('bar', :re => 333, :pattern => 444, :got => 12, :name => 'yy')
-    @dv.report_data.should == [@dv.report_columns] + [
+    @dv.report_data.should == [DirValidator::Validator.report_columns] + [
       ['foo', '',  '*', 'xx', '',    '',  '',  222],
       ['bar', 12,  '',  '',   'yy',  333, 444, ''],
     ]
