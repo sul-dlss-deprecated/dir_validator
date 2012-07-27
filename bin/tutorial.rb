@@ -53,7 +53,7 @@ dv.dirs('top-level subdir', :re => /^[a-z]{3}$/).each do |subdir|
   d2 = subdir.dir('02', :name => '02')
 
   # In the 00 subdirectory, we expect to see a bunch of .tif files.
-  # We could have used a regular expression, but in this case we'll 
+  # We could have used a regular expression, but in this case we'll
   # resort to a simple glob-like pattern.
   d0.files('tifs', :pattern => '*.tif').each do |tif|
 

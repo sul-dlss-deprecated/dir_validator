@@ -70,7 +70,7 @@ describe DirValidator::Catalog do
       @cat.load_items
       ivget(@cat, :items).size.should == exp.size
     end
-    
+
   end
 
   it "path_is_dot_dir() should behave correctly" do

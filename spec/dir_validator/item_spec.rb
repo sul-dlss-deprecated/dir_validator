@@ -53,7 +53,7 @@ describe DirValidator::Item do
   end
 
   describe "target_match()" do
-    
+
     it "should return MatchData and store it for later use" do
       itm = new_item('.')
       itm.set_target('aabb')

@@ -100,7 +100,7 @@ class DirValidator::Validator
   ####
 
   # Takes an array of items and a validation-method opts hash.
-  # Returns the subset of those items matching the name-related 
+  # Returns the subset of those items matching the name-related
   # criteria in the opts hash.
   #
   # @!visibility private
