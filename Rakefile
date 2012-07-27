@@ -7,6 +7,11 @@ task :app_version do
   puts File.read(File.expand_path('../VERSION', __FILE__)).match('[\w\.]+')[0]
 end
 
+desc 'Build gem'
+task :build do
+  system 'gem build dir_validator.gemspec'
+end
+
 desc 'Generate documentation'
 task :docs do
   system 'yard doc - bin/* LICENSE.*'

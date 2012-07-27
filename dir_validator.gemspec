@@ -3,21 +3,23 @@ $LOAD_PATH.push File.expand_path("../lib", __FILE__)
 vers = File.read(File.expand_path('../VERSION', __FILE__)).match('[\w\.]+')[0]
 
 Gem::Specification.new do |s|
+  s.name    = 'dir_validator'
+  s.version = vers
 
-  s.name              = 'dir_validator'
-  s.rubyforge_project = 'dir_validator'
-  s.version           = vers
+  s.authors  = ['Monty Hindman']
+  s.email    = ['hindman@stanford.edu']
+  s.homepage = "https://github.com/sul-dlss"
 
-  puts 
-  s.authors           = ['Monty Hindman']
-  s.email             = ['hindman@stanford.edu']
-  s.homepage          = 'homepage...'
-  s.summary           = %q{Summary...}
-  s.description       = %q{Description...}
-  s.require_paths     = ['lib']
-  s.files             = `git ls-files`.split("\n")
-  s.test_files        = `git ls-files -- {spec}/*`.split("\n")
-  s.executables       = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.summary     = "Validate content of a directory structure."
+  s.description = "This gem provides a convenient syntax for checking whether the " +
+                  "contents of a directory structure match your expectations."
+
+  s.require_paths = ['lib']
+  s.files = Dir.glob("{bin,lib}/**/*") + %w(
+    LICENSE.rdoc
+    README.rdoc
+    CHANGELOG.rdoc
+  )
 
   s.add_development_dependency 'rspec', '~> 2.6'
   s.add_development_dependency 'lyberteam-devel'

@@ -2,7 +2,7 @@
 Current work
 ------------
 
-Try to build and use gem.
+Relocate tutorial, and modify gemspec accordingly.
 
 Script interface.
 
