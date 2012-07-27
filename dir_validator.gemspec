@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
     LICENSE.rdoc
     README.rdoc
     CHANGELOG.rdoc
+    tutorial/tutorial.rb
   )
 
   s.add_development_dependency 'rspec', '~> 2.6'
