@@ -2,20 +2,18 @@
 Current work
 ------------
 
-Relocate tutorial, and modify gemspec accordingly.
-
-Script interface.
-
 Release gem to github (and remove from /afs).
 
 Set up project on jenkins: New Job >> copy existing job.
-
-Pre-assembly integration.
 
 
 -----------
 Future work
 -----------
+
+Script interface.
+
+Pre-assembly integration.
 
 Test on Windows.
 

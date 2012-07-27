@@ -14,7 +14,7 @@ end
 
 desc 'Generate documentation'
 task :docs do
-  system 'yard doc - bin/* LICENSE.*'
+  system 'yard doc - tutorial/tutorial.rb LICENSE.*'
 end
 
 def rspec_config(tag = nil)

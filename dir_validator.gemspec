@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
                   "contents of a directory structure match your expectations."
 
   s.require_paths = ['lib']
-  s.files = Dir.glob("{bin,lib}/**/*") + %w(
+  s.files = Dir.glob("lib/**/*") + %w(
     LICENSE.rdoc
     README.rdoc
     CHANGELOG.rdoc

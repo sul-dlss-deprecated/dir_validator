@@ -1,6 +1,7 @@
 #! /usr/bin/env ruby
 
-require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'boot'))
+require 'rubygems'
+require 'dir_validator'
 
 # Suppose that we want to check the following directory structure.
 #
@@ -36,7 +37,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'boot
 #               a.jp2        # Missing file.
 
 # Set up the validator, passing in the starting path.
-dv = DirValidator.new('spec/fixtures/tutorial')
+dv = DirValidator.new('tutorial/files')
 
 # Here we set up our expectation for the top-level sub-directories. In this
 # case, we are looking for 1 or more sub-directories named with exactly 3
