@@ -3,13 +3,13 @@ Current work
 ------------
 
 Code documentation and comments.
-    quantity.rb: comments only.
-    warning.rb:  document and comments.
-    catalog.rb:  comments only.
     item.rb:     document and comments.
 
-Release gem to github.
+Release gem to github (and remove from /afs).
 
+Set up project on jenkins: New Job >> copy existing job.
+
+Script interface and pre-assembly integration.
 
 -----------
 Future work
