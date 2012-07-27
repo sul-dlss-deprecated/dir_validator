@@ -1,6 +1,7 @@
 # @!attribute [r] root_path
 #   @return [String]
 #   The root path of the validator.
+#
 # @!attribute [r] warnings
 #   @return [Array]
 #   The validator's {DirValidator::Warning} objects.
@@ -22,6 +23,10 @@ class DirValidator::Validator
 
   # Validation method. See {file:README.rdoc} for details.
   #
+  # Plural validation methods ({#dirs} and {#files}) return an array of
+  # {DirValidator::Item} objects. Singular variants ({#dirs} and {#files})
+  # return one such object, or nil.
+  #
   # @param vid   [String]  Validation identifier meaningful to the user.
   # @param opts  [Hash]    Validation options.
   #
@@ -34,7 +39,7 @@ class DirValidator::Validator
   # @option opts :recurse [false|true] (false) Whether to return items other than immediate
   #                                            children.
   #
-  # @return   [DirValidator::Item]  Or nil if no matching items are found.
+  # @return   [DirValidator::Item|nil]
   def dir(vid, opts = {})
     opts = opts.merge({:n => '1'})
     return dirs(vid, opts).first

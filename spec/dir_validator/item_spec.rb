@@ -88,25 +88,25 @@ describe DirValidator::Item do
     it "dirs()" do
       hi = hash_including(:base_dir => @path)
       @dv.should_receive(:dirs).with(@vid, hi).and_return(@exp)
-      DirValidator::Item.new(@dv, @path).dirs(@vid, @opts).should == @exp
+      DirValidator::Item.new(@dv, @path, 1).dirs(@vid, @opts).should == @exp
     end
 
     it "files()" do
       hi = hash_including(:base_dir => @path)
       @dv.should_receive(:files).with(@vid, hi).and_return(@exp)
-      DirValidator::Item.new(@dv, @path).files(@vid, @opts).should == @exp
+      DirValidator::Item.new(@dv, @path, 1).files(@vid, @opts).should == @exp
     end
 
     it "dir()" do
       hi = hash_including(:base_dir => @path)
       @dv.should_receive(:dir).with(@vid, hi).and_return(@exp)
-      DirValidator::Item.new(@dv, @path).dir(@vid, @opts).should == @exp
+      DirValidator::Item.new(@dv, @path, 1).dir(@vid, @opts).should == @exp
     end
 
     it "file()" do
       hi = hash_including(:base_dir => @path)
       @dv.should_receive(:file).with(@vid, hi).and_return(@exp)
-      DirValidator::Item.new(@dv, @path).file(@vid, @opts).should == @exp
+      DirValidator::Item.new(@dv, @path, 1).file(@vid, @opts).should == @exp
     end
 
   end

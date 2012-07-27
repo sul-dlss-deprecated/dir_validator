@@ -7,6 +7,11 @@ task :app_version do
   puts File.read(File.expand_path('../VERSION', __FILE__)).match('[\w\.]+')[0]
 end
 
+desc 'Generate documentation'
+task :docs do
+  system 'yard doc - bin/* LICENSE.*'
+end
+
 def rspec_config(tag = nil)
   opts = ["-c", "-f doc"]
   opts << tag if tag

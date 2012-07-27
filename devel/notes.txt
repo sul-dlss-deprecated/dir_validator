@@ -2,14 +2,16 @@
 Current work
 ------------
 
-Code documentation and comments.
-    item.rb:     document and comments.
+Try to build and use gem.
+
+Script interface.
 
 Release gem to github (and remove from /afs).
 
 Set up project on jenkins: New Job >> copy existing job.
 
-Script interface and pre-assembly integration.
+Pre-assembly integration.
+
 
 -----------
 Future work

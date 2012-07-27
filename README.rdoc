@@ -131,19 +131,7 @@ Not yet tested on Windows.
 
 == Releases
 
-- 0.0.1 initial release
-
-
-== Running tests
-
-  bundle exec rspec spec
-
-
-== Generating documentation
-
-To generate documentation into the doc folder:
-
-  yard doc - bin/*
+- 0.11.0 Initial beta release.
 
 
 == Copyright
