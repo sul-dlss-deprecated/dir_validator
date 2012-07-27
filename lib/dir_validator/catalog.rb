@@ -1,3 +1,4 @@
+# @!visibility private
 class DirValidator::Catalog
 
   FS        = '\\' + File::SEPARATOR

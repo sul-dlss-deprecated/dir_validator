@@ -1,11 +1,11 @@
-= dir_validate gem
+= dir_validate
 
 == Synopsis
 
   require 'dir_validator'
   dv = DirValidator.new('some/path')
   dv.dirs('blah', :pattern => '*').each do |subdir|
-    # More validations.
+    # More validations as needed.
   end
   dv.report()
 
@@ -15,8 +15,7 @@
 This gem provides a convenient syntax for checking whether the contents of a
 directory structure match your expectations.
 
-The best place to start is by reading through the runnable introduction in the
-{file:bin/readme_demo.rb demo script}.
+The best place to start is by reading the {file:bin/tutorial.rb tutorial script}.
 
 The public API for the gem is fairly simple. First you set up the validator by
 passing in the path to the directory structure that you want to check.
@@ -24,16 +23,16 @@ passing in the path to the directory structure that you want to check.
   require 'dir_validator'
   dv = DirValidator.new('some/path')
 
-Then you set up your expectations regarding the content of the directory
-structure. This is done by invoking the four methods used to declare
-particular validations: 
+Then you define your expectations regarding the content of the directory
+structure. This is done with the four methods used to declare particular
+validations:
 
   dirs()
   files()
   dir()
   file()
 
-The validation methods use the following syntax:
+The validation methods use this syntax:
 
   dirs(VID, OPTS)
 
@@ -45,14 +44,14 @@ The validation methods use the following syntax:
   #              the names of files or directory as well as their
   #              quantity.
 
-The plural validation methods return an array of DirValidator::Item objects.
+The plural validation methods return an array of {DirValidator::Item} objects.
 The singular variants return one such object (or nil). The returned objects are
 those that (a) meet the criteria specified in the OPTS hash, and (b) have not
 been matched already by prior validations.
 
 The validation criteria defined in the OPTS hash come in three general types:
 
-* Name-related criteria affect whether a particular DirValidator::Item will be
+* Name-related criteria affect whether a particular {DirValidator::Item} will be
   returned (only if its file or directory name matches the criteria). You can
   supply one of the following:
 
@@ -60,26 +59,30 @@ The validation criteria defined in the OPTS hash come in three general types:
     :re       # A regular expression, supplied as either a Regexp or String.
     :pattern  # A glob-like pattern. Supports only the * and ? wildcards.
 
-* Quantity assertions. These control the maximum number of DirValidator::Item
+              # Also see the :recurse option below.
+
+* Quantity assertions. These control the maximum number of {DirValidator::Item}
   objects that will be returned. They also generate a warning if too few are
   found.
 
     :n   # A string in one of the following forms:
-         #     '*'         Zero or more.
-         #     '+'         One or more.
-         #     '?'         Zero or one.
-         #     'n+'        n or more
-         #     'n'         Exactly n.
-         #     'm-n'       m through n, inclusive.
+         #   '*'     Zero or more.
+         #   '+'     One or more.
+         #   '?'     Zero or one.
+         #   'n+'    n or more
+         #   'n'     Exactly n.
+         #   'm-n'   m through n, inclusive.
 
 * Other attributes:
 
-    :recurse  # Boolean.
+    :recurse  # Boolean (default = false).
+
               # Normally, validation methods find only the immediate
               # children of the object upon which the method is called. If
-              # this option is true, items deeper in the hierarchy can be
-              # discovered. For example, given this content:
-  
+              # :recurse is true, items deeper in the hierarchy can be
+              # discovered.
+              
+              # For example, given this content:
               # some/path/
               #   foo/
               #     bar/
@@ -99,7 +102,7 @@ After the validations have been defined, you can examine the results programmati
   dv.validate()
   dv.warnings.each do |w|
     puts w.vid
-    puts w.opts.inpsect
+    puts w.opts.inspect
   end
 
 More commonly, you can print the information contained in the warnings in the form
@@ -110,7 +113,7 @@ of a basic CSV repot.
 The warnings and the CSV report contain the following information:
 
   vid       # Validation identifier, as discussed above.
-  got       # N of items found.
+  got       # The number of items found.
   n         # A normalized version of the :n optionn discussed above.
   base_dir  # The parent directory of the item.
   name      # The name-related options discussed above.
@@ -122,6 +125,8 @@ The warnings and the CSV report contain the following information:
 == Known issues
 
 Currently handles only regular files and directories.
+
+Not yet tested on Windows.
 
 
 == Releases
@@ -138,7 +143,7 @@ Currently handles only regular files and directories.
 
 To generate documentation into the doc folder:
 
-  yard doc
+  yard doc - bin/*
 
 
 == Copyright

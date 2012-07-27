@@ -1,10 +1,18 @@
+# @!attribute [r] root_path
+#   @return [String]
+#   The root path of the validator.
+# @!attribute [r] warnings
+#   @return [Array]
+#   The validator's {DirValidator::Warning} objects.
 class DirValidator::Validator
 
-  attr_reader(:root_path, :catalog, :warnings, :validated)
+  attr_reader(:root_path, :warnings)
+  attr_reader(:catalog, :validated)  # @!visibility private
 
-  FILE_SEP  = File::SEPARATOR
-  EXTRA_VID = '_EXTRA_'
+  FILE_SEP  = File::SEPARATOR        # @!visibility private
+  EXTRA_VID = '_EXTRA_'              # @!visibility private
 
+  # @param  root_path [String] Path to the directory structure to be validated.
   def initialize(root_path)
     @root_path = root_path
     @catalog   = DirValidator::Catalog.new(self)
@@ -12,57 +20,50 @@ class DirValidator::Validator
     @validated = false
   end
 
-  ####
-  # Validations. The user creates validations using dirs(), files(),
-  # dir(), and file(). All of these methods return an array of Item
-  # objects from the catalog -- specifically, Item objects that:
+  # Validation method. See {file:README.rdoc} for details.
   #
-  #   (a) meet the user's criteria
-  #   (b) have not been matched already by prior validations
+  # @param vid   [String]  Validation identifier meaningful to the user.
+  # @param opts  [Hash]    Validation options.
   #
-  # The call must supply a validation identifier (vid). This is just
-  # a string (meaningful only to the user) that is used when generating
-  # validation warnings.
+  # @option opts :name    [String]             Item name must match a literal string.
+  # @option opts :re      [String|Regexp]      Item name must match regular expression.
+  # @option opts :pattern [String]             Item name must match a glob-like pattern.
+  # @option opts :n       [String]             Expected number of items. Plural validation
+  #                                            methods default to '1+'. Singular variants
+  #                                            force the option to be '1'.
+  # @option opts :recurse [false|true] (false) Whether to return items other than immediate
+  #                                            children.
   #
-  # Validation criteria are supplied by a hash (opts). There are two
-  # general types:
-  #
-  #   -- Name-related (:name, :pattern, and :re). These criteria
-  #      affect whether a particular Item will be returned (i.e.,
-  #      only if its name matches the criteria).
-  #   -- Quantity assertions (:n). These control the max N of
-  #      Items that will be returned. They also generate a warning
-  #      if too few Items are found.
-  #
-  # Other attributes that can be supplied in the opts hash:
-  #
-  #   -- By default, :recurse is false, which means that all
-  #      name-related criteria apply only to the contents of
-  #      the immediate enclosing directory.
-  #
-  # The underlying work is done by process_items().
-  ####
-
-  def dirs(vid, opts = {})
-    bd = normalized_base_dir(opts, :handle_recurse => true)
-    return process_items(@catalog.unmatched_dirs(bd), vid, opts)
-  end
-
-  def files(vid, opts = {})
-    bd = normalized_base_dir(opts, :handle_recurse => true)
-    return process_items(@catalog.unmatched_files(bd), vid, opts)
-  end
-
+  # @return   [DirValidator::Item]  Or nil if no matching items are found.
   def dir(vid, opts = {})
     opts = opts.merge({:n => '1'})
     return dirs(vid, opts).first
   end
 
+  # @see #dir
+  # @return   (see #dir)
   def file(vid, opts = {})
     opts = opts.merge({:n => '1'})
     return files(vid, opts).first
   end
 
+  # @see #dir
+  # @return   [Array]
+  def dirs(vid, opts = {})
+    bd = normalized_base_dir(opts, :handle_recurse => true)
+    return process_items(@catalog.unmatched_dirs(bd), vid, opts)
+  end
+
+  # @see #dir
+  # @return   [Array]
+  def files(vid, opts = {})
+    bd = normalized_base_dir(opts, :handle_recurse => true)
+    return process_items(@catalog.unmatched_files(bd), vid, opts)
+  end
+
+  # The workhorse for the the validation methods.
+  #
+  # @!visibility private
   def process_items(items, vid, opts = {})
     # Make sure the user did not forget to pass the validation identifier.
     if vid.class == Hash
@@ -98,6 +99,11 @@ class DirValidator::Validator
   # Name-related filtering.
   ####
 
+  # Takes an array of items and a validation-method opts hash.
+  # Returns the subset of those items matching the name-related 
+  # criteria in the opts hash.
+  #
+  # @!visibility private
   def name_filtered(items, opts)
     # Filter the items to those in the base_dir.
     # If there is no base_dir, no filtering occurs.
@@ -105,8 +111,9 @@ class DirValidator::Validator
     sz       = base_dir.size
     items    = items.select { |i| i.path.start_with?(base_dir) } if sz > 0
 
-    # Set the item.target values.
-    # If there is no base_dir, the target is the same as item.path.
+    # Set the item.target values, which are the values that will
+    # be subjected to the name-related test. If there is no base_dir,
+    # the target is the same as item.path.
     items.each { |i| i.set_target(i.path[sz .. -1]) }
 
     # Filter items to immediate children, unless user wants to recurse.
@@ -117,10 +124,12 @@ class DirValidator::Validator
     return items.select { |i| i.target_match(rgx) }
   end
 
+  # Takes a validation-method opts hash.
+  # Returns opts[:base_dir] in a normalized form (with trailing separator).
+  # Returns nil or '' under certain conditions.
+  #
+  # @!visibility private
   def normalized_base_dir(opts, nbd_opts = {})
-    # Given some validation options, returns opts[:base_dir] in a normalized
-    # form (with a trailing separator). Returns empty if the option is missing,
-    # and returns nil when we need to handle the :recurse option.
     return nil if opts[:recurse] and nbd_opts[:handle_recurse]
     bd = opts[:base_dir]
     return '' unless bd
@@ -129,9 +138,11 @@ class DirValidator::Validator
     return bd
   end
 
+  # Takes a validation-method opts hash.
+  # Returns the appropriate Regexp based on the name-related criteria.
+  #
+  # @!visibility private
   def name_regex(opts)
-    # Given some validation options, returns the appropriate Regexp
-    # based on the name-related criteria.
     name    = opts[:name]
     re      = opts[:re]
     pattern = opts[:pattern]
@@ -142,22 +153,33 @@ class DirValidator::Validator
     )
   end
 
+  # Takes a validation-method opts[:name] value.
+  # Returns the corresponding regex-ready string:
+  #   - wrapped in start- and end- anchors
+  #   - all special characters quoted
+  #
+  # @!visibility private
   def name_to_re(name)
-    # Converts a string into a regex-ready string, wrapped in start- and end-
-    # anchors and with all special characters quoted.
     return az_wrap(Regexp.quote(name))
   end
 
+  # Takes a validation-method opts[:pattern] value.
+  # Returns the corresponding regex-ready string
+  #   - wrapped in start- and end- anchors
+  #   - all special regex chacters quoted except for:
+  #     * becomes .*
+  #     ? becomes .
+  #
+  # @!visibility private
   def pattern_to_re(pattern)
-    # Converts a quasi-glob pattern to a regex-ready string. Specifically, all
-    # special regex chacters are quoted other than these:
-    #     * becomes .*
-    #     ? becomes .
     return az_wrap(Regexp.quote(pattern).gsub(/\\\*/, '.*').gsub(/\\\?/, '.'))
   end
 
+  # Takes a string.
+  # Returns a new string wrapped in Regexp start-of-string and end-of-string anchors.
+  #
+  # @!visibility private
   def az_wrap(s)
-    # Returns a string wrapped in Regexp start-of-string and end-of-string anchors.
     return "\\A#{s}\\z"
   end
 
@@ -166,6 +188,11 @@ class DirValidator::Validator
   # Quantity filtering.
   ####
 
+  # Takes an array of items and a DirValidator::Quantity object.
+  # Returns the subset of those items falling within the max allowed
+  # by the Quantity.
+  #
+  # @!visibility private
   def quantity_limited(items, quant)
     return items[0 .. quant.max_index]
   end
@@ -175,10 +202,20 @@ class DirValidator::Validator
   # Methods related validation warnings and reporting.
   ####
 
+  # Takes a validation identifier and a validation-method opts hash.
+  # Creates and new DirValidator::Warning and adds it to the validator's
+  # array of warnings.
+  #
+  # @!visibility private
   def add_warning(vid, opts)
     @warnings << DirValidator::Warning.new(vid, opts)
   end
 
+  # Adds a warning to the validator for all unmatched items in the catalog.
+  # Should be run after all validation-methods have been called, typically
+  # before producing a report.
+  #
+  # @!visibility private
   def validate
     return if @validated  # Run only once.
     @catalog.unmatched_items.each do |item|
@@ -187,6 +224,9 @@ class DirValidator::Validator
     @validated = true
   end
 
+  # Write a CSV report of the information contained in the validator's warnings.
+  #
+  # @param io [IO]  IO object to which the report should be written.
   def report(io = STDOUT)
     require 'csv'
     validate()
@@ -195,6 +235,10 @@ class DirValidator::Validator
     end
   end
 
+  # Returns a matrix of warning information.
+  # Used when producing the CSV report.
+  #
+  # @!visibility private
   def report_data
     rc = DirValidator::Validator.report_columns
     data = [rc]
@@ -206,6 +250,9 @@ class DirValidator::Validator
     return data
   end
 
+  # Column headings for the CSV report.
+  #
+  # @!visibility private
   def self.report_columns
     return [:vid, :got, :n, :base_dir, :name, :re, :pattern, :path]
   end

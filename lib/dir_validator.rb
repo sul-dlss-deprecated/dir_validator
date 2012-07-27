@@ -1,5 +1,9 @@
 module DirValidator
 
+  # Syntactic sugar: a module method for creating a new validator.
+  #
+  # @param (see DirValidator::Validator#new)
+  # @return [DirValidator::Validator]
   def self.new(*args, &block)
     return DirValidator::Validator.new(*args, &block)
   end

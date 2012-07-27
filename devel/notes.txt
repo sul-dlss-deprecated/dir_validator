@@ -3,8 +3,10 @@ Current work
 ------------
 
 Code documentation and comments.
-
-README: wrap up.
+    quantity.rb: comments only.
+    warning.rb:  document and comments.
+    catalog.rb:  comments only.
+    item.rb:     document and comments.
 
 Release gem to github.
 

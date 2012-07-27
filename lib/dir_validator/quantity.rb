@@ -1,3 +1,4 @@
+# @!visibility private
 class DirValidator::Quantity
 
   attr_reader(:spec, :min_n, :max_n, :max_index)
