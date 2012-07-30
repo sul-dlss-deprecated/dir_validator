@@ -129,11 +129,6 @@ Currently handles only regular files and directories.
 Not yet tested on Windows.
 
 
-== Releases
-
-- 0.11.0 Initial beta release.
-
-
 == Copyright
 
 Copyright © 2012 Stanford University Library. See LICENSE for details.
