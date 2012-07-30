@@ -88,7 +88,7 @@ class DirValidator::Catalog
     return unmatched_items(base_dir).select { |i| i.is_file }
   end
 
-  # Returns unmatches files and directories from the Catalog.
+  # Returns unmatched files and directories from the Catalog.
   def unmatched_items(base_dir = nil)
     # If a base_dir is given, we'll use the @bdi index. Otherwise,
     # we'll use the @unmatched index. When using @bdi, we also
