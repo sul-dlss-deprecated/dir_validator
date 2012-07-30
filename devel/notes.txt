@@ -2,22 +2,22 @@
 Current work
 ------------
 
-Add to release board.
-
 Set up project on jenkins: New Job >> copy existing job.
+
+Scripting interface.
+
+Deploy executable to dev, test, prod.
+
+Pre-assembly integration.
 
 
 -----------
 Future work
 -----------
 
-Script interface.
-
-Pre-assembly integration.
-
 Test on Windows.
 
-Validations: items() and item().
+New validations: items() and item().
 
 Decide how to handle symbolic links.
 
