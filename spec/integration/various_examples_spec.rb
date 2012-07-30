@@ -64,9 +64,11 @@ describe("Integration tests: various project examples", :integration => true) do
     dv.warnings.map { |w| [w.vid, w.opts] }.should == [
       ["file", {:base_dir=>"A/x", :got=>0, :n=>"1", :name=>"data"}],
       ["a..z", {:re=>/\A[a-z]\z/, :base_dir=>"Y", :got=>0}],
+      [@extra, {:path=>"A/x/.gitkeep"}],
       [@extra, {:path=>"blort.txt"}],
       [@extra, {:path=>"D/blah.txt"}],
       [@extra, {:path=>"D/d/xxx.doc"}],
+      [@extra, {:path=>"Y/.gitkeep"}],
     ]
   end
 
@@ -85,6 +87,9 @@ describe("Integration tests: various project examples", :integration => true) do
     dv.validate
     dv.warnings.map { |w| [w.vid, w.opts] }.should == [
       ["bar-files", {:pattern=>"bar.*", :got=>1, :n=>"2-5"}],
+      [@extra, {:path=>"blah2/d1/.gitkeep"}],
+      [@extra, {:path=>"blah2/d2/.gitkeep"}],
+      [@extra, {:path=>"yyy/.gitkeep"}],
     ]
   end
 

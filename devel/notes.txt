@@ -2,8 +2,6 @@
 Current work
 ------------
 
-Release gem to github (and remove from /afs).
-
 Set up project on jenkins: New Job >> copy existing job.
 
 
