@@ -35,30 +35,44 @@ class DirValidator::Catalog
     return @items ||= load_items()
   end
 
+  # Takes a path as a string. Returns true if it's . or .. directory.
+  def path_is_dot_dir(path)
+    return path =~ DOTDIR_RE ? true : false
+  end
+
   # Scans the Validator.root_dir, creating a new Item for each file/dir
   # found, and adding the Item to the indexes used by the Catalog.
+  # NOTES:
+  #   - We must instantiate the new Items from within the Dir.chdir block
+  #     in order to set their is_file and is_dir attributes correctly.
+  #   - We must put the glob() call in a separate function so that
+  #     we can sort it because we start assigning catalog_id values.
   def load_items
     catalog_id = -1
     @items     = []
-    Dir.chdir(@validator.root_path) do
-      Dir.glob('**/*', File::FNM_DOTMATCH).each do |path|
-        # We want dotfiles, but not the . and .. dirs.
-        next if path_is_dot_dir(path)
-        # Create the new Item, and give it a unique ID, which is
-        # also an index into the @items array.
+    rp         = @validator.root_path
+    Dir.chdir(rp) do
+      dir_contents_deep(rp).each do |path|
+        # Create the new Item, and give it a unique ID (which is
+        # also an index into the @items array), add it to the catalog
+        # and the indexes.
         catalog_id += 1
         item = DirValidator::Item.new(@validator, path, catalog_id)
         @items << item
-        # Add Item to the indexes.
         add_to_index(item)
       end
     end
     return @items
   end
 
-  # Takes a path as a string. Returns true if it's . or .. directory.
-  def path_is_dot_dir(path)
-    return path =~ DOTDIR_RE ? true : false
+  # Takes a root path as a string.
+  #   - gets a fully recursive list of the files and dirs
+  #   - excludes the . and .. dirs (but not the dotfiles)
+  # Return the paths in sorted orded.
+  def dir_contents_deep(root_path)
+    paths = Dir.glob('**/*', File::FNM_DOTMATCH)
+    paths = paths.reject { |p| path_is_dot_dir(p) }
+    return paths.sort
   end
 
   # Takes an Item object and adds it to the Catalog indexes.

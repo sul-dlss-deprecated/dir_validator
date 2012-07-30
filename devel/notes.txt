@@ -2,12 +2,6 @@
 Current work
 ------------
 
-Refactor load_items
-  - put Dir calls in a separate method
-  - that method should return the items in sorted order
-  - this will allow unit-level testing of the method
-  - and it will solve testing indeterminacy problems
-
 Scripting interface.
 
 Deploy executable to dev, test, prod.

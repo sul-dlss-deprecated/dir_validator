@@ -65,10 +65,10 @@ describe("Integration tests: various project examples", :integration => true) do
       ["file", {:base_dir=>"A/x", :got=>0, :n=>"1", :name=>"data"}],
       ["a..z", {:re=>/\A[a-z]\z/, :base_dir=>"Y", :got=>0}],
       [@extra, {:path=>"A/x/.gitkeep"}],
-      [@extra, {:path=>"blort.txt"}],
       [@extra, {:path=>"D/blah.txt"}],
       [@extra, {:path=>"D/d/xxx.doc"}],
       [@extra, {:path=>"Y/.gitkeep"}],
+      [@extra, {:path=>"blort.txt"}],
     ]
   end
 
