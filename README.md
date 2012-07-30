@@ -15,7 +15,7 @@
 This gem provides a convenient syntax for checking whether the contents of a
 directory structure match your expectations.
 
-The best place to start is by reading the [tutorial script](tutorial/tutorial.rb).
+The best place to start is by reading the [tutorial script](/tutorial/tutorial.rb).
 
 The public API for the gem is fairly simple. First you set up the validator by
 passing in the path to the directory structure that you want to check.
