@@ -1,6 +1,6 @@
-= dir_validate
+# dir_validate
 
-== Synopsis
+## Synopsis
 
   require 'dir_validator'
   dv = DirValidator.new('some/path')
@@ -10,12 +10,12 @@
   dv.report()
 
 
-== Overview
+## Overview
 
 This gem provides a convenient syntax for checking whether the contents of a
 directory structure match your expectations.
 
-The best place to start is by reading the {file:tutorial/tutorial.rb tutorial script}.
+The best place to start is by reading the [tutorial script](tutorial/tutorial.rb).
 
 The public API for the gem is fairly simple. First you set up the validator by
 passing in the path to the directory structure that you want to check.
@@ -122,18 +122,18 @@ The warnings and the CSV report contain the following information:
   path      # The path of the item.
 
 
-== Known issues
+## Known issues
 
 Currently handles only regular files and directories.
 
 Not yet tested on Windows.
 
 
-== Releases
+## Releases
 
 - 0.11.0 Initial beta release.
 
 
-== Copyright
+## Copyright
 
 Copyright © 2012 Stanford University Library. See LICENSE for details.
