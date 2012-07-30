@@ -2,6 +2,8 @@
 Current work
 ------------
 
+Add to release board.
+
 Set up project on jenkins: New Job >> copy existing job.
 
 

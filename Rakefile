@@ -1,6 +1,8 @@
 require "bundler/gem_tasks"
-require 'dlss/rake/dlss_release'
 require 'rspec/core/rake_task'
+
+require 'dlss/rake/dlss_release'
+Dlss::Release.new
 
 desc 'Get application version'
 task :app_version do
