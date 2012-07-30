@@ -44,7 +44,7 @@ The validation methods use this syntax:
   #              the names of files or directory as well as their
   #              quantity.
 
-The plural validation methods return an array of {DirValidator::Item} objects.
+The plural validation methods return an array of DirValidator::Item objects.
 The singular variants return one such object (or nil). The returned objects are
 those that (a) meet the criteria specified in the OPTS hash, and (b) have not
 been matched already by prior validations.
