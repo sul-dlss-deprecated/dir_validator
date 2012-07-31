@@ -35,7 +35,7 @@ end
 
 desc 'Generate YARD documentation'
 task :docs do
-  system 'yard doc - tutorial/tutorial.rb LICENSE.*'
+  system 'yard doc'
 end
 
 
