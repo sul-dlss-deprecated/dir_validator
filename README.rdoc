@@ -81,7 +81,7 @@ The validation criteria defined in the OPTS hash come in three general types:
               # children of the object upon which the method is called. If
               # :recurse is true, items deeper in the hierarchy can be
               # discovered.
-              
+
               # For example, given this content:
               # some/path/
               #   foo/

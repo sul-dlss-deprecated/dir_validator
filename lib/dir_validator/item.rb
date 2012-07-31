@@ -75,7 +75,7 @@ class DirValidator::Item
   end
 
   # Validation method, using a {DirValidator::Item} as the receiver.
-  # 
+  #
   # @see DirValidator::Validator#dir
   # @return  (see DirValidator::Validator#dir)
   def dir(vid, opts = {})

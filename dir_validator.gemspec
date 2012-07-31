@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
     README.rdoc
     CHANGELOG.rdoc
     tutorial/tutorial.rb
+    .yardopts
   )
 
   s.add_development_dependency 'rspec', '~> 2.6'

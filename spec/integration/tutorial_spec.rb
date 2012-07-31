@@ -4,7 +4,7 @@ describe("Tutorial demo", :integration => true) do
 
   it "can run the tutorial without errors" do
     # Read tutorial script.
-    tutorial = IO.readlines('tutorial/tutorial.rb') 
+    tutorial = IO.readlines('tutorial/tutorial.rb')
     # Swap one of the require lines.
     rq  = "File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'boot'))"
     rgx = /\Arequire 'dir_validator'/

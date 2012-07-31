@@ -2,6 +2,8 @@
 Current work
 ------------
 
+Set up docs and coverage on jenkins.
+
 Scripting interface.
 
 Deploy executable to dev, test, prod.
