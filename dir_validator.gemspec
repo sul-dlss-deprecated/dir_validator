@@ -27,8 +27,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec', '~> 2.6'
   s.add_development_dependency 'yard'
   s.add_development_dependency 'rake'
-  # s.add_development_dependency 'awesome_print'
-  # s.add_development_dependency 'looksee'
+  s.add_development_dependency 'awesome_print'
+  s.add_development_dependency 'looksee'
   # s.add_development_dependency (RUBY_VERSION < "1.9" ? 'rcov' : 'simplecov')
 
 end
