@@ -70,7 +70,7 @@ dv.dirs('top-level subdir', :re => /^[a-z]{3}$/).each do |subdir|
 end
 
 # We can generate a basic CSV report that will list:
-#   - items that we not found
+#   - items that were not found
 #   - extra items
 #
 # The CSV output (with extra spacing here for readability):

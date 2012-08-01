@@ -2,8 +2,6 @@
 Current work
 ------------
 
-Set up docs and coverage on jenkins.
-
 Scripting interface.
 
 Deploy executable to dev, test, prod.
@@ -15,11 +13,13 @@ Pre-assembly integration.
 Future work
 -----------
 
-Test on Windows.
+Jenkins: docs and coverage [waiting on Jira ticket SAR-967]
+
+Test on Windows, Linux, and Ubuntu.
 
 New validations: items() and item().
 
-Decide how to handle symbolic links.
+Consider how to handle symbolic links (and other file types).
 
 Option: suppress warning about extra items.
 
