@@ -2,6 +2,13 @@
 Current work
 ------------
 
+Get rcov/simplecov back in project
+    https://github.com/cbeer/rubydora
+      # Search for rcov and simplecov
+      Gemfile
+      spec_helper.rb
+      Rakefile
+
 Set up travis-ci
   Put this on top of your README.rdoc file 
   {<img src="https://secure.travis-ci.org/rnz0/rgeoserver.png" />}[http://travis-ci.org/rnz0/rgeoserver]
