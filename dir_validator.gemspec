@@ -28,4 +28,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'awesome_print'
   s.add_development_dependency 'looksee'
   s.add_development_dependency 'rcov'
+  s.add_development_dependency 'rake'
 end
