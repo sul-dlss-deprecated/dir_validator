@@ -6,6 +6,8 @@ Set up travis-ci
   Put this on top of your README.rdoc file 
   {<img src="https://secure.travis-ci.org/rnz0/rgeoserver.png" />}[http://travis-ci.org/rnz0/rgeoserver]
 
+Remove project from release board and DLSS gem server
+
 Scripting interface.
 
 Deploy executable to dev, test, prod.

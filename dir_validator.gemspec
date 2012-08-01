@@ -24,7 +24,6 @@ Gem::Specification.new do |s|
   )
 
   s.add_development_dependency 'rspec', '~> 2.6'
-  s.add_development_dependency 'lyberteam-devel'
   s.add_development_dependency 'yard'
   s.add_development_dependency 'awesome_print'
   s.add_development_dependency 'looksee'
