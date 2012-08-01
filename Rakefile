@@ -7,8 +7,8 @@ def rspec_config(tag = nil)
   opts = ["-c", "-f doc"]
   opts << tag if tag
   return lambda { |spec|
-    spec.rcov       = true
-    spec.rcov_opts  = ["--exclude /gems/,spec/"]
+    # spec.rcov       = true
+    # spec.rcov_opts  = ["--exclude /gems/,spec/"]
     spec.rspec_opts = opts
   }
 end
