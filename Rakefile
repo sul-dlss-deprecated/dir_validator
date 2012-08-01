@@ -1,6 +1,8 @@
 require "bundler/gem_tasks"
 require 'rspec/core/rake_task'
 
+task :default => [:rspec]
+
 ####
 # Building the gem and generating documentation.
 ####

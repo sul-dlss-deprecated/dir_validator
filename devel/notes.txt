@@ -2,6 +2,10 @@
 Current work
 ------------
 
+Set up travis-ci
+  Put this on top of your README.rdoc file 
+  {<img src="https://secure.travis-ci.org/rnz0/rgeoserver.png" />}[http://travis-ci.org/rnz0/rgeoserver]
+
 Scripting interface.
 
 Deploy executable to dev, test, prod.
@@ -12,6 +16,10 @@ Pre-assembly integration.
 -----------
 Future work
 -----------
+
+Set up gemnasium.com.
+  Put this on top of your README.rdoc file 
+  {<img src="https://gemnasium.com/rnz0/rgeoserver.png" alt="Dependency Status" />}[https://gemnasium.com/rnz0/rgeoserver]
 
 Jenkins: docs and coverage [waiting on Jira ticket SAR-967]
 

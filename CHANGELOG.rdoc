@@ -2,8 +2,9 @@
 
 * Initial beta release.
 
-== 0.12.6 (2012-07-31)
+== 0.12.7 (2012-08-01)
 
 * Improved Rakefile.
 * Ironed out some kinks in deployment and YARD documentation.
 * Minor tutorial edits.
+* Set up travis-ci.
