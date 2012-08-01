@@ -34,7 +34,7 @@ end
 ####
 
 desc 'Generate YARD documentation'
-task :docs do
+task :doc do
   system 'yard doc'
 end
 
