@@ -3,6 +3,7 @@ $LOAD_PATH.push File.expand_path("../lib", __FILE__)
 vers = File.read(File.expand_path('../VERSION', __FILE__)).match('[\w\.]+')[0]
 
 Gem::Specification.new do |s|
+
   s.name    = 'dir_validator'
   s.version = vers
 
@@ -27,6 +28,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'yard'
   s.add_development_dependency 'awesome_print'
   s.add_development_dependency 'looksee'
-  s.add_development_dependency 'rcov'
+  s.add_development_dependency (RUBY_VERSION < "1.9" ? 'rcov' : 'simplecov')
   s.add_development_dependency 'rake'
+
 end

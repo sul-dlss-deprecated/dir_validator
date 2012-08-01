@@ -2,7 +2,7 @@
 
 * Initial beta release.
 
-== 0.12.9 (2012-08-01)
+== 0.12.10 (2012-08-01)
 
 * Improved Rakefile.
 * Ironed out some kinks in deployment and YARD documentation.
