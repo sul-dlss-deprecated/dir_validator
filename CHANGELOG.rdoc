@@ -6,3 +6,4 @@
 
 * Improved Rakefile.
 * Ironed out some kinks in deployment and YARD documentation.
+* Minor tutorial edits.
