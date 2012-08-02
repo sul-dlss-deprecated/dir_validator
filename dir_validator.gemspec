@@ -15,7 +15,8 @@ Gem::Specification.new do |s|
   s.description = "This gem provides a convenient syntax for checking whether the " +
                   "contents of a directory structure match your expectations."
 
-  s.require_paths = ['lib']
+  s.require_paths = %w(lib)
+  s.executables   = %w(bin/validate-dir)
   s.files = Dir.glob("lib/**/*") + %w(
     LICENSE.rdoc
     README.rdoc

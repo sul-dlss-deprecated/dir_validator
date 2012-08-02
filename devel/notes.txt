@@ -4,8 +4,6 @@ Current work
 
 Remove project from release board and DLSS gem server
 
-Scripting interface.
-
 Deploy executable to dev, test, prod.
 
 Pre-assembly integration.

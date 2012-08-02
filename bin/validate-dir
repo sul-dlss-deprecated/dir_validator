@@ -1,0 +1,6 @@
+#! /usr/bin/env ruby
+
+require 'rubygems'
+require 'dir_validator'
+
+DirValidator.run_script(ARGV).report()

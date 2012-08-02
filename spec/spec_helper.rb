@@ -1,8 +1,8 @@
 require 'rubygems'
 require 'rspec'
 require 'rspec/autorun'
-require 'tempfile'
 require 'stringio'
+require 'tempfile'
 require 'awesome_print'
 require 'dir_validator'
 
