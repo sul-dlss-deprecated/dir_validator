@@ -1,6 +1,6 @@
-$LOAD_PATH.push File.expand_path("../lib", __FILE__)
-
-vers = File.read(File.expand_path('../VERSION', __FILE__)).match('[\w\.]+')[0]
+proj_dir = File.expand_path('..', __FILE__)
+vers     = File.read(File.join(proj_dir, 'VERSION')).match('[\w\.]+')[0]
+$LOAD_PATH.unshift File.join(proj_dir, "lib")
 
 Gem::Specification.new do |s|
 
@@ -28,6 +28,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'yard'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'awesome_print'
-  # s.add_development_dependency (RUBY_VERSION < "1.9" ? 'rcov' : 'simplecov')
 
 end

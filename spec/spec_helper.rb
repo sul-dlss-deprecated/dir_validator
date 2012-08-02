@@ -1,10 +1,19 @@
+require 'rubygems'
 require 'rspec'
 require 'rspec/autorun'
 require 'tempfile'
 require 'stringio'
+require 'awesome_print'
+require 'dir_validator'
 
-require File.expand_path(File.join(File.dirname(__FILE__), '..', 'config', 'boot'))
+$LOAD_PATH.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
 
+if ENV['COVERAGE'] and RUBY_VERSION =~ /^1.9/
+  require 'simplecov'
+  require 'simplecov-rcov'
+  SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
+  SimpleCov.start
+end
 
 def fixture_item(dir, file = nil)
   # Takes directory name and, optionally, a file name.

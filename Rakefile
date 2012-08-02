@@ -1,14 +1,27 @@
+require 'bundler'
 require "bundler/gem_tasks"
 require 'rspec/core/rake_task'
 
-task :default => [:rspec]
+## Bundler setup ##
+
+begin
+  Bundler.setup(:default, :development)
+rescue Bundler::BundlerError => e
+  $stderr.puts e.message
+  $stderr.puts "Run `bundle install` to install missing gems"
+  exit e.status_code
+end
+
+
+## Running tests ##
+
+task(:default => [:rspec])
 
 def rspec_config(tag = nil)
   opts = ["-c", "-f doc"]
-  opts << tag if tag
+  opts.push(tag) if tag
   return lambda { |spec|
-    # spec.rcov       = true
-    # spec.rcov_opts  = ["--exclude /gems/,spec/"]
+    spec.rcov = true if ENV['COVERAGE'] and RUBY_VERSION =~ /^1.8/
     spec.rspec_opts = opts
   }
 end
@@ -21,3 +34,11 @@ RSpec::Core::RakeTask.new(:rspec_unit, &rspec_config("--tag ~integration"))
 
 desc "Run integration tests"
 RSpec::Core::RakeTask.new(:rspec_int, &rspec_config("--tag integration"))
+
+
+## Other ##
+
+desc "Open an irb session preloaded with this library"
+task :console do
+  system "irb -rubygems -I lib -r dir_validator.rb"
+end

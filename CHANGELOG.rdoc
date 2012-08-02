@@ -2,10 +2,10 @@
 
 * Initial beta release.
 
-== 0.12.13 (2012-08-01)
+== 0.12.14 (2012-08-02)
 
 * Improved Rakefile.
 * Ironed out some kinks in deployment and YARD documentation.
 * Minor tutorial edits.
 * Removed dependency on lyberteam-devel.
-* Set up travis-ci.
+* Set up travis-ci, rcov/simplecov, etc.
