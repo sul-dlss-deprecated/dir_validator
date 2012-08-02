@@ -2,17 +2,6 @@
 Current work
 ------------
 
-Get rcov/simplecov back in project
-    https://github.com/cbeer/rubydora
-      # Search for rcov and simplecov
-      Gemfile
-      spec_helper.rb
-      Rakefile
-
-Set up travis-ci
-  Put this on top of your README.rdoc file 
-  {<img src="https://secure.travis-ci.org/rnz0/rgeoserver.png" />}[http://travis-ci.org/rnz0/rgeoserver]
-
 Remove project from release board and DLSS gem server
 
 Scripting interface.
@@ -27,8 +16,6 @@ Future work
 -----------
 
 Set up gemnasium.com.
-  Put this on top of your README.rdoc file 
-  {<img src="https://gemnasium.com/rnz0/rgeoserver.png" alt="Dependency Status" />}[https://gemnasium.com/rnz0/rgeoserver]
 
 Jenkins: docs and coverage [waiting on Jira ticket SAR-967]
 

@@ -1,3 +1,5 @@
+{<img src="https://secure.travis-ci.org/sul-dlss/dir_validator.png?branch=master" alt="Build Status" />}[http://travis-ci.org/sul-dlss/dir_validator]
+
 = dir_validate
 
 == Synopsis
