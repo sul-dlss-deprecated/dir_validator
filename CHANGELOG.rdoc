@@ -10,6 +10,6 @@
 * Removed dependency on lyberteam-devel.
 * Set up travis-ci, rcov/simplecov, etc.
 
-== 0.13.1 (2012-08-02)
+== 0.13.2 (2012-08-02)
 
 * Added bin/validate-dir and a general scripting functionality.
