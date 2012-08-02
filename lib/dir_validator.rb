@@ -31,7 +31,7 @@ module DirValidator
     # Require the script, and add its functions to the module.
     script = args.first
     abort "Usage: #{$PROGRAM_NAME} SCRIPT" unless File.file?(script.to_s)
-    require script
+    require File.expand_path(script)
     module_function(:initialize_validator, :run_validator)
     # Create validator, run the validation code supplied by user.
     dv = DirValidator.new(initialize_validator)
