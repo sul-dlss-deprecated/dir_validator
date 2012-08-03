@@ -1,4 +1,4 @@
-require 'spec/fixtures/hummel_validate_via_cmd.rb'
+require File.expand_path('spec/fixtures/hummel_validate_via_cmd.rb')
 
 module DirValidator
 

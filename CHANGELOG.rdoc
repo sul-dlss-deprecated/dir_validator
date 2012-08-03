@@ -14,6 +14,6 @@
 
 * Added bin/validate-dir and a general scripting functionality.
 
-== 0.14.0 (2012-08-03)
+== 0.14.1 (2012-08-03)
 
 * Improved bin/validate-dir to allow passing directory on command line.
