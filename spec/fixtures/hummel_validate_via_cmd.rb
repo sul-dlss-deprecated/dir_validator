@@ -1,9 +1,5 @@
 module DirValidator
 
-  def initialize_validator
-    return 'spec/fixtures/hummel'
-  end
-    
   def run_validator(dv)
     dv.dirs('druid_dirs', :re => @druid_re).each do |dir|
       d0 = dir.dir('00', :name => '00')

@@ -2,16 +2,14 @@
 Current work
 ------------
 
-Remove project from release board and DLSS gem server
-
-Deploy executable to dev, test, prod.
-
 Pre-assembly integration.
 
 
 -----------
 Future work
 -----------
+
+Remove project from release board (already removed from DLSS gem server).
 
 Set up gemnasium.com.
 
