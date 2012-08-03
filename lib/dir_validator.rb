@@ -42,6 +42,7 @@ module DirValidator
     # If the user did not implement the initialize_validator() method,
     # we will get the params from from args (the command line).
     init_params = initialize_validator()
+    init_params = [init_params] unless init_params.class == Array
     init_params = args unless init_params.first
     usage.call unless File.directory?(init_params.first.to_s)
     # Create validator and run the validation code supplied by user.
