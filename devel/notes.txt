@@ -4,10 +4,20 @@ Current work
 
 Pre-assembly integration.
 
+Test on Windows, Linux, and Ubuntu.
+
 
 -----------
 Future work
 -----------
+
+Consider how to handle symbolic links (and other file types).
+
+New validations: items() and item().
+
+----
+
+Consider whether to support config-style syntax.
 
 Remove project from release board (already removed from DLSS gem server).
 
@@ -15,16 +25,8 @@ Set up gemnasium.com.
 
 Jenkins: docs and coverage [waiting on Jira ticket SAR-967]
 
-Test on Windows, Linux, and Ubuntu.
-
-New validations: items() and item().
-
-Consider how to handle symbolic links (and other file types).
-
 Option: suppress warning about extra items.
 
 Option: tallies: dirs, files, missing, extra.
 
 Option: tally: total file size.
-
-Consider whether to support config-style syntax.
