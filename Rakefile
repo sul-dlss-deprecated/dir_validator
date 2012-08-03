@@ -21,7 +21,8 @@ def rspec_config(tag = nil)
   opts = ["-c", "-f doc"]
   opts.push(tag) if tag
   return lambda { |spec|
-    spec.rcov = true if ENV['COVERAGE'] and RUBY_VERSION =~ /^1.8/
+    spec.rcov       = true if ENV['COVERAGE'] and RUBY_VERSION =~ /^1.8/
+    spec.rcov_opts  = ["--exclude /gems/,spec/"]
     spec.rspec_opts = opts
   }
 end
