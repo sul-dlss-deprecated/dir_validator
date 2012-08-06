@@ -4,7 +4,9 @@ Current work
 
 Pre-assembly integration.
 
-Test on Windows, Linux, and Ubuntu.
+Test on Linux: run Gould script for on -prod.
+
+Test on Windows and Ubuntu: at home.
 
 
 -----------
