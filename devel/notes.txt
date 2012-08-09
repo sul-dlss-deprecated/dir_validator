@@ -8,6 +8,8 @@ Test on Linux: run Gould script for on -prod.
 
 Test on Windows and Ubuntu: at home.
 
+Jenkins: docs and coverage [waiting on Jira ticket SAR-967, which is done]
+
 
 -----------
 Future work
@@ -24,8 +26,6 @@ Consider whether to support config-style syntax.
 Remove project from release board (already removed from DLSS gem server).
 
 Set up gemnasium.com.
-
-Jenkins: docs and coverage [waiting on Jira ticket SAR-967]
 
 Option: suppress warning about extra items.
 
