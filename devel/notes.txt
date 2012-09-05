@@ -2,14 +2,9 @@
 Current work
 ------------
 
-Pre-assembly integration.
-
 Test on Linux: run Gould script for on -prod.
 
 Test on Windows and Ubuntu: at home.
-
-Jenkins: docs and coverage [waiting on Jira ticket SAR-967, which is done]
-
 
 -----------
 Future work

@@ -43,3 +43,8 @@ desc "Open an irb session preloaded with this library"
 task :console do
   system "irb -rubygems -I lib -r dir_validator.rb"
 end
+
+desc "Generate Yard documentation"
+task :doc do
+  system "yard"
+end
