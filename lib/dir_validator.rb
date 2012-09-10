@@ -69,5 +69,3 @@ require 'dir_validator/item'
 require 'dir_validator/quantity'
 require 'dir_validator/validator'
 require 'dir_validator/warning'
-
-require 'awesome_print'
