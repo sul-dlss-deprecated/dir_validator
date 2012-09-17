@@ -22,3 +22,7 @@
 
 * Ironed out kinks in deployment and continuous integration (docs, etc).
 * Removed inadvertent reference to awesome_print.
+
+== 0.14.6 (2012-09-17)
+
+* Tested gem on Windows and Ubuntu.

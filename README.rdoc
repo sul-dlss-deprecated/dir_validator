@@ -128,8 +128,6 @@ The warnings and the CSV report contain the following information:
 
 Currently handles only regular files and directories.
 
-Not yet tested on Windows.
-
 
 == Copyright
 

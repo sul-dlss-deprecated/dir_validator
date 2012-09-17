@@ -2,9 +2,8 @@
 Current work
 ------------
 
-Test on Linux: run Gould script for on -prod.
+Notes on editing/deployment process.
 
-Test on Windows and Ubuntu: at home.
 
 -----------
 Future work
