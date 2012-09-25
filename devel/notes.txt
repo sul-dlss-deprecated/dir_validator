@@ -2,14 +2,12 @@
 Current work
 ------------
 
-Notes on editing/deployment process.
+Consider how to handle symbolic links (and other file types).
 
 
 -----------
 Future work
 -----------
-
-Consider how to handle symbolic links (and other file types).
 
 New validations: items() and item().
 
@@ -26,3 +24,30 @@ Option: suppress warning about extra items.
 Option: tallies: dirs, files, missing, extra.
 
 Option: tally: total file size.
+
+
+-----------
+Common development tasks
+-----------
+
+See all tasks:
+
+    rake -T
+
+Release new code:
+
+    - Modify code.
+
+    - Edit these files:
+        CHANGELOG.rdoc
+        VERSION
+
+    - Run tests:
+        rake rspec
+
+    - Commit to Git.
+        git commit ...
+        git push   ...
+
+    - Create gem, push to Rubygems, and push release tag to Git.
+        rake release

@@ -26,3 +26,4 @@
 == 0.14.6 (2012-09-17)
 
 * Tested gem on Windows and Ubuntu.
+* Notes.
